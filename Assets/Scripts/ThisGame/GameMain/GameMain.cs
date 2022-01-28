@@ -18,6 +18,23 @@ namespace GameMainSpace
 		{
 			CollisionController.GetInstance().Update();
 
+			// キー入力で移動
+			if (Input.GetKeyDown(KeyCode.W))
+			{
+				GameMainData.Player.Move(PlayerSpace.Player.E_PlayerDirection.Forward); // 前
+			}
+			else if (Input.GetKeyDown(KeyCode.A))
+            {
+				GameMainData.Player.Move(PlayerSpace.Player.E_PlayerDirection.Left); // 左
+			}
+			else if (Input.GetKeyDown(KeyCode.S))
+			{
+				GameMainData.Player.Move(PlayerSpace.Player.E_PlayerDirection.Right); // 右
+			}
+			else if (Input.GetKeyDown(KeyCode.D))
+			{
+				GameMainData.Player.Move(PlayerSpace.Player.E_PlayerDirection.Back); // 後ろ
+			}
 		}
 
 	}

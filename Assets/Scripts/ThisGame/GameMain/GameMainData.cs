@@ -15,7 +15,7 @@ namespace GameMainSpace
 			Player = new PlayerSpace.Player(gameObject.transform.Find("Chara").gameObject, this);
 		}
 	
-		bool PlayerSpace.Player.IPlayer.CanMove(Vector2Int nextMasu)
+		bool PlayerSpace.Player.IPlayer.CanMove(Vector3 nextMasu)
         {
 			return true;
         }
