@@ -9,16 +9,26 @@ namespace GameMainSpace
 		public GameObject GameObject { get; }
 		public PlayerSpace.Player Player { get; }
 
-		public GameMainData( GameObject gameObject )
+		public GameMainData(GameObject gameObject)
 		{
 			GameObject = gameObject;
 			Player = new PlayerSpace.Player(gameObject.transform.Find("Chara").gameObject, this);
 		}
-	
+
 		bool PlayerSpace.Player.IPlayer.CanMove(Vector3 nextMasu)
-        {
+		{
 			return true;
-        }
+		}
+
+		void PlayerSpace.Player.IPlayer.ZeroCandleCallBack()
+		{
+
+		}
+
+		void PlayerSpace.Player.IPlayer.FinishMove(Vector3 nowMasu)
+		{
+
+		}
 	}
 
 
