@@ -27,7 +27,16 @@ public class UIGameMainManager : MonoBehaviour
     void Update()
     {
 		// TODO デバッグ用
-		/*
+#if true
+		if(Input.GetKeyDown(KeyCode.Alpha1)){
+			SetCandleNum(1);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha2)){
+			SetCandleNum(2);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha0)){
+			SetCandleNum(10);
+		}
 		if(Input.GetKeyDown(KeyCode.A)){
 			TutorialPrevPage();
 		}
@@ -52,7 +61,7 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.X)){
 			FadeManager.FadeIn();
 		}
-		*/
+#endif
     }
 	/// <summary>
 	/// ゲームUI開始
