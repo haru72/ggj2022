@@ -11,8 +11,9 @@ namespace GameMainSpace
 		public PanelSpace.MasuController PanelController { get; }
 		public WallSpacce.WallManager WallManager { get; }
 		public MasuGimicSpace.MasuGimicManager MasuGimicManager { get; }
+		public CleanSpace.CleanController CleanController { get; }
 
-		GameMainUtility GameMainUtility => new GameMainUtility( this );
+		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
 		public GameMainData(GameObject gameObject)
 		{
@@ -26,6 +27,7 @@ namespace GameMainSpace
 			WallManager = new WallSpacce.WallManager( fieldTransform , PanelController.CalcMasuByPos );
 			MasuGimicManager = new MasuGimicSpace.MasuGimicManager( fieldTransform , PanelController.CalcMasuByPos );
 
+			CleanController = new CleanSpace.CleanController( gameObject.transform.Find( "CleanManager" ) , 10 );
 		}
 
 		bool PlayerSpace.Player.IPlayer.CanMove( Vector3 nextMasu )

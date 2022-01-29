@@ -56,7 +56,12 @@ namespace GameMainSpace.PlayerSpace
             get { return GameObject.transform.position; } // プレイヤー座標を返す
         }
 
-        public void Move(Vector3 nextMasu)
+		public Vector3 GetForward
+		{
+			get { return GameObject.transform.forward; } // プレイヤーの正面方向を返す
+		}
+
+		public void Move(Vector3 nextMasu)
         {
 			if (m_isMove) return; // 移動中は操作不可
 

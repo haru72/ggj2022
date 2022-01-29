@@ -8,6 +8,7 @@ public class GameMainScene : MonoBehaviour
 	GameMainSpace.GameMain _gameMain;
 	void Awake()
 	{
+		Application.targetFrameRate = 60;
 		_gameMain = new GameMainSpace.GameMain( gameObject );
 	}
 
