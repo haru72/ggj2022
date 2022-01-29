@@ -21,8 +21,30 @@ namespace GameMainSpace
 			return isInWall;
 		}
 
+		public Vector2Int CalcForwardMasu( Vector2Int nowMasu , Vector3 forward )
+		{
 
-		public List<Vector2Int> MasuSearch( Vector2Int nowMasu , Vector3 forward , int range )
+			if( forward.x > 0.5f )
+			{
+				return new Vector2Int( nowMasu.x + 1 , nowMasu.y );
+			}
+			else if( forward.x < -0.5f )
+			{
+				return new Vector2Int( nowMasu.x -1 , nowMasu.y );
+			}
+			else if( forward.z > 0.5f )
+			{
+				return new Vector2Int( nowMasu.x , nowMasu.y + 1 );
+			}
+			else if( forward.z < -0.5f )
+			{
+				return new Vector2Int( nowMasu.x , nowMasu.y - 1 );
+			}
+
+			return Vector2Int.zero;
+		}
+
+		public List<Vector2Int> CalcForwardMasuList( Vector2Int nowMasu , Vector3 forward , int range )
 		{
 			const int width = 3;
 			var ret = new List<Vector2Int>();

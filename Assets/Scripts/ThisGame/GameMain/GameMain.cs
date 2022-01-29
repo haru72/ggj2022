@@ -51,27 +51,12 @@ namespace GameMainSpace
 				GameMainData.Player.Move( nextPos );
 			} else if( Input.GetKeyDown(  KeyCode.Space ) )
 			{
-				var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
-				var masuList = GameMainData.GameMainUtility.MasuSearch( playerMasu , GameMainData.Player.GetForward , 2 );
-				var posList = new List<Vector3>();
-				foreach( var masu in masuList )
-				{
-					var pos = GameMainData.PanelController.CalcPosByMasu( masu );
-					posList.Add( pos );
-					
-					//呪い削除
-					var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu );
-					if( masuGimic != null &&
-						masuGimic.GimicType == MasuGimicSpace.GimicType.Curse &&
-						masuGimic.CanTouch()
-					){
-						Debug.Log( "assaffdg" );
-						masuGimic.Action();
-					}
-				}
+				bool isLookCandle = InputAction_Candle();
 
-				//浄化発生
-				GameMainData.CleanController.Setup( posList );
+				if( ! isLookCandle )
+				{
+					InputAction_Curse();
+				}
 
 			}
 
@@ -79,6 +64,56 @@ namespace GameMainSpace
 			GameMainData.Player.Update();
 			GameMainData.CleanController.Update();
 			GameMainData.MasuGimicManager.Update();
+		}
+
+
+		bool InputAction_Candle()
+		{
+			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+			var forwardMasu = GameMainData.GameMainUtility.CalcForwardMasu( playerMasu , GameMainData.Player.GetForward );
+
+			var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( forwardMasu );
+			if( masuGimic == null  )
+			{
+				return false;
+			}
+			if( masuGimic.GimicType != MasuGimicSpace.GimicType.Candlestick )
+			{
+				return false;
+			}
+
+			if( masuGimic.CanTouch() )
+			{
+				masuGimic.Action();
+			}
+
+			return true;
+		}
+
+		void InputAction_Curse()
+		{
+			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+			var masuList = GameMainData.GameMainUtility.CalcForwardMasuList( playerMasu , GameMainData.Player.GetForward , 2 );
+			var posList = new List<Vector3>();
+			foreach( var masu in masuList )
+			{
+				var pos = GameMainData.PanelController.CalcPosByMasu( masu );
+				posList.Add( pos );
+
+				//呪い削除
+				var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu );
+				if( masuGimic != null &&
+					masuGimic.GimicType == MasuGimicSpace.GimicType.Curse &&
+					masuGimic.CanTouch()
+				)
+				{
+					Debug.Log( "assaffdg" );
+					masuGimic.Action();
+				}
+			}
+
+			//浄化発生
+			GameMainData.CleanController.Setup( posList );
 		}
 
 	}
