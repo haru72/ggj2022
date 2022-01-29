@@ -8,17 +8,16 @@ namespace GameMainSpace.PlayerSpace
 	{
 		public interface IPlayer
 		{
+			float MoveSpeed { get; }		//移動速度
+			float TurnSpeed { get; }		//回転速度
 			bool CanMove( Vector3 nextMasu );
-			void ZeroCandleCallBack();
 			void FinishMove(Vector3 nowMasu);
 		}
 
 		GameObject GameObject { get; }
 		IPlayer PlayerInterface { get; }
 
-		[SerializeField] float m_moveSpeed = 10.0f;		// 移動スピード
-		[SerializeField] float m_turnSpeed = 2000.0f;   // 回転スピード
-		[SerializeField] int m_candleNum = 10;			// ろうそく初期所持数
+		int m_candleNum = 10;			// ろうそく所持数
 
 		bool m_isMove = false;		// 現在動いているかどうかのフラグ
 		bool m_isTurn = false;		// 現在回転しているかどうかのフラグ
@@ -41,8 +40,6 @@ namespace GameMainSpace.PlayerSpace
 			{
 				if (m_isMove) MoveNextMasu();
 			}
-
-			if (m_candleNum == 0) PlayerInterface.ZeroCandleCallBack();
 		}
 
 		public int GetSetCandleNum
@@ -79,7 +76,7 @@ namespace GameMainSpace.PlayerSpace
 			if (GameObject.transform.rotation != m_NextMasuRot)
 			{
 				// プレイヤーの回転
-				GameObject.transform.rotation = Quaternion.RotateTowards(GameObject.transform.rotation, m_NextMasuRot, m_turnSpeed * Time.deltaTime);
+				GameObject.transform.rotation = Quaternion.RotateTowards(GameObject.transform.rotation, m_NextMasuRot, PlayerInterface.TurnSpeed * Time.deltaTime);
 			}
 			else
 			{
@@ -93,7 +90,7 @@ namespace GameMainSpace.PlayerSpace
 			if (GameObject.transform.position != m_nextMasuPos)
 			{
 				// プレイヤーの移動
-				GameObject.transform.position = Vector3.MoveTowards(GameObject.transform.position, m_nextMasuPos, m_moveSpeed * Time.deltaTime);
+				GameObject.transform.position = Vector3.MoveTowards(GameObject.transform.position, m_nextMasuPos, PlayerInterface.MoveSpeed * Time.deltaTime);
 			}
 			else
 			{

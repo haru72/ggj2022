@@ -17,17 +17,28 @@ public class UIGameMainManager : MonoBehaviour
     void Start()
     {
         m_candleNum = m_candleNumObj.GetComponent<CandleNum>();
+		Debug.Log( m_candleNum );
 		m_tutorial = m_tutorialObj.GetComponent<Tutorial>();
+		Debug.Log( m_tutorial );
 
 		// TODO フェードのデバッグ
 		//SceneManager.LoadScene("Fade", LoadSceneMode.Additive);
-    }
+	}
 
-    // Update is called once per frame
-    void Update()
+	// Update is called once per frame
+	void Update()
     {
 		// TODO デバッグ用
-		/*
+#if true
+		if(Input.GetKeyDown(KeyCode.Alpha1)){
+			SetCandleNum(1);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha2)){
+			SetCandleNum(2);
+		}
+		if(Input.GetKeyDown(KeyCode.Alpha0)){
+			SetCandleNum(10);
+		}
 		if(Input.GetKeyDown(KeyCode.A)){
 			TutorialPrevPage();
 		}
@@ -52,7 +63,7 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.X)){
 			FadeManager.FadeIn();
 		}
-		*/
+#endif
     }
 	/// <summary>
 	/// ゲームUI開始

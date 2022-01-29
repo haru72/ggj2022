@@ -13,10 +13,13 @@ namespace GameMainSpace.MasuGimicSpace
 		const float LightingSetupEndTime = 1.5f;
 		float _timer = 0;
 		Action _updateSub;
+		GameObject LightObj { get; }
 
 		public MasuGimic_Candle( MasuGimicBehaviour masuGimicBehaviour ) : base( masuGimicBehaviour )
 		{
-			_material = MasuGimicBehaviour.GetComponentInChildren<MeshRenderer>().material;
+			LightObj = MasuGimicBehaviour.transform.Find( "Light" ).gameObject;
+			LightObj.SetActive( false );
+			_material = LightObj.GetComponent<MeshRenderer>().material;
 			//_baseEmissionColor = _material.GetColor( "EmissionColor" );
 
 		}
@@ -28,6 +31,7 @@ namespace GameMainSpace.MasuGimicSpace
 
 		public override void Action()
 		{
+			LightObj.SetActive( true );
 		}
 
 		public override bool CanTouch()

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace GameMainSpace
@@ -8,11 +9,21 @@ namespace GameMainSpace
 	{
 		GameMainData GameMainData { get; }
 
-
-		public GameMain( GameObject gameObject )
+		public GameMain( GameMainScene gameMainScene )
 		{
-			GameMainData = new GameMainData( gameObject );
+			GameMainData = new GameMainData( gameMainScene.gameObject , gameMainScene );
+			
+			SystemController.GetInstance().SystemBehaviour.StartCoroutine( StartupCoroutine() );
 		}
+
+		IEnumerator StartupCoroutine()
+		{
+			yield return null;
+
+			GameMainData.Player.GetSetCandleNum = GameMainData.DefineInterface.StartCandleNum;
+			GameMainData.UIGameMainManager.SetCandleNum( GameMainData.Player.GetSetCandleNum );
+		}
+
 
 		public void Update()
 		{
@@ -51,34 +62,74 @@ namespace GameMainSpace
 				GameMainData.Player.Move( nextPos );
 			} else if( Input.GetKeyDown(  KeyCode.Space ) )
 			{
-				var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
-				var masuList = GameMainData.GameMainUtility.MasuSearch( playerMasu , GameMainData.Player.GetForward , 2 );
-				var posList = new List<Vector3>();
-				foreach( var masu in masuList )
+				if( GameMainData.Player.GetSetCandleNum > 1 )
 				{
-					var pos = GameMainData.PanelController.CalcPosByMasu( masu );
-					posList.Add( pos );
-					
-					//呪い削除
-					var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu );
-					if( masuGimic != null &&
-						masuGimic.GimicType == MasuGimicSpace.GimicType.Curse &&
-						masuGimic.CanTouch()
-					){
-						Debug.Log( "assaffdg" );
-						masuGimic.Action();
+					bool isLookCandle = InputAction_Candle();
+					if( !isLookCandle )
+					{
+						InputAction_Curse();
 					}
 				}
-
-				//浄化発生
-				GameMainData.CleanController.Setup( posList );
-
 			}
-
 
 			GameMainData.Player.Update();
 			GameMainData.CleanController.Update();
 			GameMainData.MasuGimicManager.Update();
+		}
+
+
+		bool InputAction_Candle()
+		{
+			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+			var forwardMasu = GameMainData.GameMainUtility.CalcForwardMasu( playerMasu , GameMainData.Player.GetForward );
+
+			var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( forwardMasu );
+			if( masuGimic == null  )
+			{
+				return false;
+			}
+			if( masuGimic.GimicType != MasuGimicSpace.GimicType.Candlestick )
+			{
+				return false;
+			}
+
+			if( masuGimic.CanTouch() )
+			{
+				masuGimic.Action();
+			}
+
+			return true;
+		}
+
+		void InputAction_Curse()
+		{
+			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+			var masuList = GameMainData.GameMainUtility.CalcForwardMasuList(
+				playerMasu , GameMainData.Player.GetForward , GameMainData.DefineInterface.CleanRange );
+			var posList = new List<Vector3>();
+			foreach( var masu in masuList )
+			{
+				var pos = GameMainData.PanelController.CalcPosByMasu( masu );
+				posList.Add( pos );
+
+				//呪い削除
+				var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu );
+				if( masuGimic != null &&
+					masuGimic.GimicType == MasuGimicSpace.GimicType.Curse &&
+					masuGimic.CanTouch()
+				)
+				{
+					masuGimic.Action();
+				}
+			}
+
+			//浄化発生
+			GameMainData.CleanController.Setup( posList );
+
+			var candleNum = GameMainData.Player.GetSetCandleNum - 1;
+			GameMainData.Player.GetSetCandleNum = candleNum;
+			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
+
 		}
 
 	}
