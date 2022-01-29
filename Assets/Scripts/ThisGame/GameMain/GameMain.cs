@@ -21,19 +21,34 @@ namespace GameMainSpace
 			// キー入力で移動
 			if (Input.GetKeyDown(KeyCode.W)) // 上
 			{
-				GameMainData.Player.Move(new Vector3(0f,0f,1f)); // (*)引数の座標は仮です。
+				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+				masu.y += 1;
+				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
+
+				GameMainData.Player.Move( nextPos ); // (*)引数の座標は仮です。
 			}
 			else if (Input.GetKeyDown(KeyCode.A)) // 左
-            {
-				GameMainData.Player.Move(new Vector3(-1f, 0f, 0f));
+			{
+				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+				masu.x -= 1;
+				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
+				GameMainData.Player.Move( nextPos );
 			}
 			else if (Input.GetKeyDown(KeyCode.S)) // 下
 			{
-				GameMainData.Player.Move(new Vector3(0f, 0f, -1f));
+				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+				masu.y -= 1;
+				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
+
+				GameMainData.Player.Move( nextPos );
 			}
 			else if (Input.GetKeyDown(KeyCode.D)) //右
 			{
-				GameMainData.Player.Move(new Vector3(1f, 0f, 0f));
+				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+				masu.x += 1;
+				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
+
+				GameMainData.Player.Move( nextPos );
 			}
 
 			GameMainData.Player.Update();

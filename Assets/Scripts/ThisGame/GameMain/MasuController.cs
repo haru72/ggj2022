@@ -24,8 +24,8 @@ namespace GameMainSpace.PanelSpace
 
 		public Vector3 CalcPosByMasu( Vector2Int masu )
 		{
-			float x = masu.x * PanelSize + StartPos.x;
-			float z = masu.y * PanelSize + StartPos.z;
+			float x = masu.x * PanelSize + StartPos.x + PanelSize / 2;
+			float z = masu.y * PanelSize + StartPos.z + PanelSize / 2;
 			return new Vector3( x , 0 , z );
 		}
 	}

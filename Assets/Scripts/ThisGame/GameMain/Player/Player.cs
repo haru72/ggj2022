@@ -61,7 +61,7 @@ namespace GameMainSpace.PlayerSpace
 			if (m_isMove) return; // 移動中は操作不可
 
 			// 移動先のマスの座標
-			m_nextMasuPos = GameObject.transform.position + nextMasu;
+			m_nextMasuPos = nextMasu + Vector3.zero;
 			if (!PlayerInterface.CanMove(m_nextMasuPos)) return; // 移動不可
 			// 移動先のマスへの回転量
 			m_NextMasuRot = Quaternion.LookRotation(m_nextMasuPos - GameObject.transform.position, Vector3.up);
