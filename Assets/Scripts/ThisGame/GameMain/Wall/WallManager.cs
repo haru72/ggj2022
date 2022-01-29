@@ -17,6 +17,11 @@ namespace GameMainSpace.WallSpacce
 			{
 				var masu = calcMasuByPos( wall.transform.position );
 				var str = ToDicKey( masu );
+				if( IsWallDic.ContainsKey( str ) )
+				{
+					Debug.LogError( "壁重複あり:" + str );
+					continue;
+				}
 				IsWallDic.Add( str , true );
 			}
 
