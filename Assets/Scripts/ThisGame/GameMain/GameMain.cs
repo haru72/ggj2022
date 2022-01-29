@@ -19,15 +19,12 @@ namespace GameMainSpace
 		IEnumerator StartupCoroutine()
 		{
 			yield return null;
-
-			GameMainData.Player.GetSetCandleNum = GameMainData.DefineInterface.StartCandleNum;
-			GameMainData.UIGameMainManager.SetCandleNum( GameMainData.Player.GetSetCandleNum );
+			GameMainData.GameMainUtility.ChangeCandleNum( GameMainData.DefineInterface.StartCandleNum );
 		}
 
 
 		public void Update()
 		{
-			CollisionController.GetInstance().Update();
 
 			// キー入力で移動
 			if( Input.GetKeyDown( KeyCode.W ) ) // 上
@@ -36,7 +33,7 @@ namespace GameMainSpace
 				masu.y += 1;
 				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
 
-				GameMainData.Player.Move( nextPos ); // (*)引数の座標は仮です。
+				GameMainData.Player.Move( nextPos );
 			}
 			else if( Input.GetKeyDown( KeyCode.A ) ) // 左
 			{
@@ -62,7 +59,11 @@ namespace GameMainSpace
 				GameMainData.Player.Move( nextPos );
 			} else if( Input.GetKeyDown(  KeyCode.Space ) )
 			{
-				if( GameMainData.Player.GetSetCandleNum > 1 )
+				if( IsForegroundGoal() )
+				{
+					//ゴール手前 誤ってろうそくを使わないようにする
+				}
+				else if( GameMainData.Player.GetSetCandleNum > 1 )
 				{
 					bool isLookCandle = InputAction_Candle();
 					if( !isLookCandle )
@@ -75,20 +76,31 @@ namespace GameMainSpace
 			GameMainData.Player.Update();
 			GameMainData.CleanController.Update();
 			GameMainData.MasuGimicManager.Update();
+			CollisionController.GetInstance().Update();
+			MyAnimationController.GetInstance().Update();
 		}
 
+		bool IsForegroundGoal()
+		{
+			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
+			var forwardMasu = GameMainData.GameMainUtility.CalcForwardMasu( playerMasu , GameMainData.Player.GetForward );
+
+			var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( forwardMasu , MasuGimicSpace.GimicType.Goal );
+			if( masuGimic == null )
+			{
+				return false;
+			}
+
+			return true;
+		}
 
 		bool InputAction_Candle()
 		{
 			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 			var forwardMasu = GameMainData.GameMainUtility.CalcForwardMasu( playerMasu , GameMainData.Player.GetForward );
 
-			var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( forwardMasu );
+			var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( forwardMasu , MasuGimicSpace.GimicType.Candlestick );
 			if( masuGimic == null  )
-			{
-				return false;
-			}
-			if( masuGimic.GimicType != MasuGimicSpace.GimicType.Candlestick )
 			{
 				return false;
 			}
@@ -105,7 +117,7 @@ namespace GameMainSpace
 		{
 			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 			var masuList = GameMainData.GameMainUtility.CalcForwardMasuList(
-				playerMasu , GameMainData.Player.GetForward , GameMainData.DefineInterface.CleanRange );
+			playerMasu , GameMainData.Player.GetForward , GameMainData.DefineInterface.CleanRange );
 			var posList = new List<Vector3>();
 			foreach( var masu in masuList )
 			{
@@ -113,11 +125,8 @@ namespace GameMainSpace
 				posList.Add( pos );
 
 				//呪い削除
-				var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu );
-				if( masuGimic != null &&
-					masuGimic.GimicType == MasuGimicSpace.GimicType.Curse &&
-					masuGimic.CanTouch()
-				)
+				var masuGimic = GameMainData.MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Curse );
+				if( masuGimic != null && masuGimic.CanTouch() )
 				{
 					masuGimic.Action();
 				}
@@ -127,9 +136,7 @@ namespace GameMainSpace
 			GameMainData.CleanController.Setup( posList );
 
 			var candleNum = GameMainData.Player.GetSetCandleNum - 1;
-			GameMainData.Player.GetSetCandleNum = candleNum;
-			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
-
+			GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
 		}
 
 	}

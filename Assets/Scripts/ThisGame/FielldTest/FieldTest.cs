@@ -46,16 +46,19 @@ namespace FielldTestSpace
 					bool isInWall = WallManager.IsInWall( masu );
 					Debug.Log( "isInWall:" + isInWall );
 
-					var masuGimic = MasuGimicManager.GetMasuGimic( masu );
-					if( masuGimic != null )
+					var masuGimicList = MasuGimicManager.GetMasuGimicList( masu );
+
+					foreach( var masuGimic in masuGimicList )
 					{
-						Debug.Log( "GimicType:" + masuGimic.GimicType );
-
-						if( masuGimic.CanTouch() )
+						if( masuGimic != null )
 						{
-							masuGimic.Action();
-						}
+							Debug.Log( "GimicType:" + masuGimic.GimicType );
 
+							if( masuGimic.CanTouch() )
+							{
+								masuGimic.Action();
+							}
+						}
 					}
 
 				}

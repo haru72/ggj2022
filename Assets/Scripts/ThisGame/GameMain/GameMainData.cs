@@ -51,6 +51,42 @@ namespace GameMainSpace
 
 		void PlayerSpace.Player.IPlayer.FinishMove( Vector3 nowMasu )
 		{
+			var masu = PanelController.CalcMasuByPos( nowMasu );
+
+			//Damage
+			{
+				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Curse );
+				if( masuGimic != null && masuGimic.CanTouch() )
+				{
+					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
+					masuGimic.Action();
+				}
+			}
+
+			//Item
+			{
+				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Key );
+				if( masuGimic != null && masuGimic.CanTouch() )
+				{
+
+					Player.GetSetKeyNum = Player.GetSetKeyNum + 1;
+					masuGimic.Action();
+
+				}
+			}
+
+			//Item
+			{
+				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Goal );
+				if( masuGimic != null && masuGimic.CanTouch() )
+				{
+
+					Player.GetSetKeyNum = Player.GetSetKeyNum - 1;
+					masuGimic.Action();
+
+				}
+			}
+
 		}
 
 		float PlayerSpace.Player.IPlayer.MoveSpeed => DefineInterface.PlayerMoveSpeed;

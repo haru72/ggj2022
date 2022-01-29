@@ -7,8 +7,8 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CleanMaterial
-  m_Shader: {fileID: -6465566751694194690, guid: 93a9c3f13764f9540b2a155b919e1f05, type: 3}
+  m_Name: CharaAreaMaterial
+  m_Shader: {fileID: -6465566751694194690, guid: e0b87d73aa3eb5447894ed52c8d68e90, type: 3}
   m_ShaderKeywords: 
   m_LightmapFlags: 4
   m_EnableInstancingVariants: 0
@@ -107,13 +107,14 @@ Material:
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
-    - EmissionColor: {r: 0, g: 2.9464588, b: 23.968628, a: 0.48235294}
+    - Color_22af70812a8849e2a7e54900d63614cd: {r: 2.670157, g: 2.670157, b: 2.670157, a: 0.22745098}
+    - EmissionColor: {r: 0, g: 0.08320022, b: 1, a: 0}
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []
---- !u!114 &1393687476653579757
+--- !u!114 &8173734460464407031
 MonoBehaviour:
   m_ObjectHideFlags: 11
   m_CorrespondingSourceObject: {fileID: 0}
