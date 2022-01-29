@@ -21,6 +21,7 @@ namespace GameMainSpace
 		public MasuGimicSpace.MasuGimicManager MasuGimicManager { get; }
 		public CleanSpace.CleanController CleanController { get; }
 		public UIGameMainManager UIGameMainManager { get; }
+		public CameraSpace.CameraController CameraController { get; }
 
 		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
@@ -41,6 +42,8 @@ namespace GameMainSpace
 
 			CleanController = new CleanSpace.CleanController( gameObject.transform.Find( "CleanManager" ) , 10 );
 
+			CameraController = new CameraSpace.CameraController();
+
 			UIGameMainManager = gameObject.transform.Find( "UIGameMainManager" ).GetComponent<UIGameMainManager>();
 		}
 
@@ -60,6 +63,16 @@ namespace GameMainSpace
 				{
 					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
 					masuGimic.Action();
+
+					if( Player.GetSetCandleNum <= 0 )
+					{
+						//GameOver
+						Player.Dead();
+					}
+					else
+					{
+						Player.Damage();
+					}
 				}
 			}
 
@@ -68,25 +81,29 @@ namespace GameMainSpace
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Key );
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
-
 					Player.GetSetKeyNum = Player.GetSetKeyNum + 1;
 					masuGimic.Action();
-
+					Player.Pickup();
 				}
 			}
 
-			//Item
+			//Goal
 			{
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Goal );
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
-
 					Player.GetSetKeyNum = Player.GetSetKeyNum - 1;
 					masuGimic.Action();
-
 				}
 			}
 
+			var candleList = MasuGimicManager.GetCandleList();
+			foreach( var masuGimic_candle in candleList )
+			{
+				var dif = (Player.Pos - masuGimic_candle.Pos).sqrMagnitude;
+				bool active = (dif < 400 );
+				masuGimic_candle.SetActiveLight( active );
+			}
 		}
 
 		float PlayerSpace.Player.IPlayer.MoveSpeed => DefineInterface.PlayerMoveSpeed;

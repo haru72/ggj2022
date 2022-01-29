@@ -56,6 +56,11 @@ public class MyAnimation
 
 	}
 
+	public void SetBool( string paramName , bool value )
+	{
+		_animator.SetBool( paramName , value );
+	}
+
 	public bool Play( string stateName , int priority = 0 , Action callback = null )
 	{
 		var callbackCls = new CallbackCls();

@@ -18,6 +18,8 @@ namespace GameMainSpace.MasuGimicSpace
 		List<MasuGimic> _masuGimicList = new List<MasuGimic>();
 		Dictionary<string , Dictionary<GimicType ,int>> _indexDicDic = new Dictionary<string , Dictionary<GimicType , int>>();
 
+		List<int> _candleIndexList = new List<int>();
+
 		public MasuGimicManager( Transform transform , Func<Vector3 , Vector2Int> calcMasuByPos )
 		{
 			var masuGimicBehaviourAry = transform.GetComponentsInChildren<MasuGimicBehaviour>();
@@ -32,7 +34,12 @@ namespace GameMainSpace.MasuGimicSpace
 					_indexDicDic.Add( str , new Dictionary<GimicType , int>() );
 				}
 				_indexDicDic[ str ].Add( masuGimicBehaviour.GimicType , _masuGimicList.Count );
+				if( masuGimicBehaviour.GimicType == GimicType.Candlestick )
+				{
+					_candleIndexList.Add( _masuGimicList.Count );
+				}
 				_masuGimicList.Add( masuGimic );
+
 			}
 		}
 
@@ -69,6 +76,17 @@ namespace GameMainSpace.MasuGimicSpace
 			foreach( var keyValue in dic )
 			{
 				ret.Add( _masuGimicList[ keyValue.Value ] );
+			}
+
+			return ret;
+		}
+
+		public List<MasuGimic_Candle> GetCandleList()
+		{
+			var ret = new List<MasuGimic_Candle>();
+			foreach( var candleIndex in _candleIndexList )
+			{
+				ret.Add( _masuGimicList[ candleIndex ] as MasuGimic_Candle );
 			}
 
 			return ret;

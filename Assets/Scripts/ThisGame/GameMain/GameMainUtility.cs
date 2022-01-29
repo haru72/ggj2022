@@ -22,6 +22,13 @@ namespace GameMainSpace
 				return true;
 			}
 
+			var masuGimicCandle = GameMainData.MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Candlestick );
+			if( masuGimicCandle != null )
+			{
+				return true;
+			}
+
+
 			var masuGimicGoal = GameMainData.MasuGimicManager.GetMasuGimic( masu, MasuGimicSpace.GimicType.Goal );
 			if( masuGimicGoal != null && masuGimicGoal.CanTouch() )
 			{
@@ -38,11 +45,6 @@ namespace GameMainSpace
 		{
 			GameMainData.Player.GetSetCandleNum = candleNum;
 			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
-
-			if( GameMainData.Player.GetSetCandleNum <= 0 )
-			{
-				//GameOver
-			}
 
 		}
 

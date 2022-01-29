@@ -15,8 +15,6 @@ namespace GameMainSpace.MasuGimicSpace
 		public MasuGimic_Curse( MasuGimicBehaviour masuGimicBehaviour ) :base( masuGimicBehaviour )
 		{
 			_material = MasuGimicBehaviour.GetComponentInChildren<MeshRenderer>().material;
-			Debug.Log( _material.name );
-			
 		}
 
 		public override void Update()
@@ -32,8 +30,6 @@ namespace GameMainSpace.MasuGimicSpace
 				_timer = DeleteEndTime;
 				_updateSub = null;
 			}
-
-			Debug.Log( "Rate:" + _timer / DeleteEndTime * 50 );
 			_material.SetFloat( "Rate" , _timer / DeleteEndTime * 50 );
 		}
 
