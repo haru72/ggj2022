@@ -17,7 +17,7 @@ namespace GameMainSpace.MasuGimicSpace
 		public MasuGimic_Candle( MasuGimicBehaviour masuGimicBehaviour ) : base( masuGimicBehaviour )
 		{
 			_material = MasuGimicBehaviour.GetComponentInChildren<MeshRenderer>().material;
-			_baseEmissionColor = _material.GetColor( "EmissionColor" );
+			//_baseEmissionColor = _material.GetColor( "EmissionColor" );
 
 		}
 
