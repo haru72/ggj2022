@@ -12,7 +12,8 @@ namespace GameMainSpace
 		public GameMain( GameMainScene gameMainScene )
 		{
 			GameMainData = new GameMainData( gameMainScene.gameObject , gameMainScene );
-			
+			GameMainData.CameraController.Setup( GameMainData.Player.Pos );
+
 			SystemController.GetInstance().SystemBehaviour.StartCoroutine( StartupCoroutine() );
 		}
 
@@ -76,6 +77,9 @@ namespace GameMainSpace
 			GameMainData.Player.Update();
 			GameMainData.CleanController.Update();
 			GameMainData.MasuGimicManager.Update();
+
+			GameMainData.CameraController.Update( GameMainData.Player.Pos );
+
 			CollisionController.GetInstance().Update();
 			MyAnimationController.GetInstance().Update();
 		}

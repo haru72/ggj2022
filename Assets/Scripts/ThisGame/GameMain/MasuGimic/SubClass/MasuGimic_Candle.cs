@@ -19,7 +19,7 @@ namespace GameMainSpace.MasuGimicSpace
 		{
 			LightObj = MasuGimicBehaviour.transform.Find( "Light" ).gameObject;
 			LightObj.SetActive( false );
-			_material = LightObj.GetComponent<MeshRenderer>().material;
+			//_material = LightObj.GetComponent<MeshRenderer>().material;
 			//_baseEmissionColor = _material.GetColor( "EmissionColor" );
 
 		}

@@ -21,6 +21,7 @@ namespace GameMainSpace
 		public MasuGimicSpace.MasuGimicManager MasuGimicManager { get; }
 		public CleanSpace.CleanController CleanController { get; }
 		public UIGameMainManager UIGameMainManager { get; }
+		public CameraSpace.CameraController CameraController { get; }
 
 		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
@@ -40,6 +41,8 @@ namespace GameMainSpace
 			MasuGimicManager = new MasuGimicSpace.MasuGimicManager( fieldTransform , PanelController.CalcMasuByPos );
 
 			CleanController = new CleanSpace.CleanController( gameObject.transform.Find( "CleanManager" ) , 10 );
+
+			CameraController = new CameraSpace.CameraController();
 
 			UIGameMainManager = gameObject.transform.Find( "UIGameMainManager" ).GetComponent<UIGameMainManager>();
 		}

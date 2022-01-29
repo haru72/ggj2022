@@ -11,11 +11,12 @@ namespace GameMainSpace.PlayerSpace
 			float MoveSpeed { get; }		//移動速度
 			float TurnSpeed { get; }		//回転速度
 			bool CanMove( Vector3 nextMasu );
-			void FinishMove(Vector3 nowMasu);
+			void FinishMove( Vector3 nowMasu );
 		}
 
 		GameObject GameObject { get; }
 		IPlayer PlayerInterface { get; }
+		public Vector3 Pos =>GameObject.transform.position;
 
 		int m_candleNum = 10;           // ろうそく所持数
 		int m_keyNum = 0;
@@ -32,7 +33,7 @@ namespace GameMainSpace.PlayerSpace
 
 		public void Update()
 		{
-			if (m_isTurn)
+			if ( m_isTurn )
 			{
 				TurnNextMasu();
 			}
