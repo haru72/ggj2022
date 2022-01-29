@@ -92,10 +92,8 @@ namespace GameMainSpace
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Goal );
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
-
 					Player.GetSetKeyNum = Player.GetSetKeyNum - 1;
 					masuGimic.Action();
-
 				}
 			}
 
