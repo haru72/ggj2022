@@ -12,6 +12,7 @@ namespace GameMainSpace.MasuGimicSpace
 		float _onIntensity;
 		const float LightingSetupEndTime = 1.5f;
 		float _timer = 0;
+		bool _canTouch = true;
 		Action _updateSub;
 		GameObject LightObj { get; }
 
@@ -32,11 +33,13 @@ namespace GameMainSpace.MasuGimicSpace
 		public override void Action()
 		{
 			LightObj.SetActive( true );
+
+			_canTouch = false;
 		}
 
 		public override bool CanTouch()
 		{
-			return true;
+			return _canTouch;
 		}
 
 	}

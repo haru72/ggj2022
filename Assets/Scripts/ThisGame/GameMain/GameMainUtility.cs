@@ -39,11 +39,6 @@ namespace GameMainSpace
 			GameMainData.Player.GetSetCandleNum = candleNum;
 			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
 
-			if( GameMainData.Player.GetSetCandleNum <= 0 )
-			{
-				//GameOver
-			}
-
 		}
 
 		public Vector2Int CalcForwardMasu( Vector2Int nowMasu , Vector3 forward )

@@ -63,6 +63,16 @@ namespace GameMainSpace
 				{
 					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
 					masuGimic.Action();
+
+					if( Player.GetSetCandleNum <= 0 )
+					{
+						//GameOver
+						Player.Dead();
+					}
+					else
+					{
+						Player.Damage();
+					}
 				}
 			}
 
@@ -71,14 +81,13 @@ namespace GameMainSpace
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Key );
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
-
 					Player.GetSetKeyNum = Player.GetSetKeyNum + 1;
 					masuGimic.Action();
-
+					Player.Pickup();
 				}
 			}
 
-			//Item
+			//Goal
 			{
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Goal );
 				if( masuGimic != null && masuGimic.CanTouch() )

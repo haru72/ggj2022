@@ -12,7 +12,11 @@ namespace GameMainSpace
 		public GameMain( GameMainScene gameMainScene )
 		{
 			GameMainData = new GameMainData( gameMainScene.gameObject , gameMainScene );
-			GameMainData.CameraController.Setup( GameMainData.Player.Pos );
+
+			var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.Pos );
+			var pos = GameMainData.PanelController.CalcPosByMasu( masu );
+			GameMainData.Player.SetPos( pos );
+			GameMainData.CameraController.Setup( pos );
 
 			SystemController.GetInstance().SystemBehaviour.StartCoroutine( StartupCoroutine() );
 		}
@@ -26,9 +30,27 @@ namespace GameMainSpace
 
 		public void Update()
 		{
+			InputPlayer();
+
+			GameMainData.Player.Update();
+			GameMainData.CleanController.Update();
+			GameMainData.MasuGimicManager.Update();
+
+			GameMainData.CameraController.Update( GameMainData.Player.Pos );
+
+			CollisionController.GetInstance().Update();
+			MyAnimationController.GetInstance().Update();
+		}
+
+		void InputPlayer()
+		{
+			if( ! GameMainData.Player.CanAction() )
+			{
+				return;
+			}
 
 			// キー入力で移動
-			if( Input.GetKeyDown( KeyCode.W ) ) // 上
+			if( Input.GetKey( KeyCode.W ) ) // 上
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.y += 1;
@@ -36,14 +58,14 @@ namespace GameMainSpace
 
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKeyDown( KeyCode.A ) ) // 左
+			else if( Input.GetKey( KeyCode.A ) ) // 左
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.x -= 1;
 				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKeyDown( KeyCode.S ) ) // 下
+			else if( Input.GetKey( KeyCode.S ) ) // 下
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.y -= 1;
@@ -51,14 +73,15 @@ namespace GameMainSpace
 
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKeyDown( KeyCode.D ) ) //右
+			else if( Input.GetKey( KeyCode.D ) ) //右
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.x += 1;
 				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
 
 				GameMainData.Player.Move( nextPos );
-			} else if( Input.GetKeyDown(  KeyCode.Space ) )
+			}
+			else if( Input.GetKeyDown( KeyCode.Space ) )
 			{
 				if( IsForegroundGoal() )
 				{
@@ -73,16 +96,8 @@ namespace GameMainSpace
 					}
 				}
 			}
-
-			GameMainData.Player.Update();
-			GameMainData.CleanController.Update();
-			GameMainData.MasuGimicManager.Update();
-
-			GameMainData.CameraController.Update( GameMainData.Player.Pos );
-
-			CollisionController.GetInstance().Update();
-			MyAnimationController.GetInstance().Update();
 		}
+
 
 		bool IsForegroundGoal()
 		{
@@ -112,7 +127,9 @@ namespace GameMainSpace
 			if( masuGimic.CanTouch() )
 			{
 				masuGimic.Action();
+				GameMainData.Player.LightupCandle();
 			}
+
 
 			return true;
 		}
@@ -139,6 +156,7 @@ namespace GameMainSpace
 			//浄化発生
 			GameMainData.CleanController.Setup( posList );
 
+			GameMainData.Player.Purify();
 			var candleNum = GameMainData.Player.GetSetCandleNum - 1;
 			GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
 		}

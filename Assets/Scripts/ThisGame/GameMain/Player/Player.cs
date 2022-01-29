@@ -16,7 +16,11 @@ namespace GameMainSpace.PlayerSpace
 
 		GameObject GameObject { get; }
 		IPlayer PlayerInterface { get; }
-		public Vector3 Pos =>GameObject.transform.position;
+		public Vector3 Pos => GameObject.transform.position;
+		public void SetPos( Vector3 pos )
+		{
+			GameObject.transform.position = pos + Vector3.zero;
+		}
 
 		int m_candleNum = 10;           // ろうそく所持数
 		int m_keyNum = 0;
@@ -25,11 +29,17 @@ namespace GameMainSpace.PlayerSpace
 		Vector3 m_nextMasuPos;		// 移動先のマスの座標
 		Quaternion m_NextMasuRot;   // 移動先のマスへの回転量
 
+		MyAnimation MyAnimation { get; }
+
 		public Player( GameObject gameObject , IPlayer playerInterface )
 		{
 			GameObject = gameObject;
 			PlayerInterface = playerInterface;
-        }
+
+			MyAnimation = new MyAnimation();
+			MyAnimation.Init( gameObject.GetComponentInChildren<Animator>() );
+
+		}
 
 		public void Update()
 		{
@@ -64,9 +74,36 @@ namespace GameMainSpace.PlayerSpace
 			get { return GameObject.transform.forward; } // プレイヤーの正面方向を返す
 		}
 
+		public bool CanAction()
+		{
+			return MyAnimation.IsPlaying( "Stay" ) || MyAnimation.IsPlaying( "Walk" );
+		}
+
+		public void LightupCandle()
+		{
+			MyAnimation.Play( "Light" );
+		}
+		public void Damage()
+		{
+			MyAnimation.Play( "Damage" );
+		}
+		public void Pickup()
+		{
+			MyAnimation.Play( "PickUp" );
+		}
+		public void Dead()
+		{
+			MyAnimation.Play( "Dead" );
+		}
+		public void Purify()
+		{
+			MyAnimation.Play( "Purify" );
+		}
+
 		public void Move(Vector3 nextMasu)
         {
 			if (m_isMove) return; // 移動中は操作不可
+
 
 			// 移動先のマスの座標
 			m_nextMasuPos = nextMasu + Vector3.zero;
@@ -76,10 +113,12 @@ namespace GameMainSpace.PlayerSpace
 			if( GameObject.transform.rotation != m_NextMasuRot )
 			{
 				m_isTurn = true;
+				MyAnimation.SetBool( "IsWalk" , true );
 			}
 			else if( PlayerInterface.CanMove( m_nextMasuPos ) )
 			{
 				m_isMove = true;
+				MyAnimation.SetBool( "IsWalk" , true );
 			}
 		}
 
@@ -95,6 +134,7 @@ namespace GameMainSpace.PlayerSpace
 			{
 				// 回転し終わったら回転フラグを下ろす
 				m_isTurn = false;
+				MyAnimation.SetBool( "IsWalk" , false );
 			}
 		}
 
@@ -110,6 +150,7 @@ namespace GameMainSpace.PlayerSpace
 				// 移動し終わったら移動フラグを下ろす
 				m_isMove = false;
 				PlayerInterface.FinishMove(GameObject.transform.position);
+				MyAnimation.SetBool( "IsWalk" , false );
 			}
 		}
 	}

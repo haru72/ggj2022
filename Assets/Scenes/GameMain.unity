@@ -1656,7 +1656,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 223659409}
   m_LocalRotation: {x: 0.5, y: 0, z: 0, w: 0.8660254}
-  m_LocalPosition: {x: 8.27, y: 12, z: 0}
+  m_LocalPosition: {x: 9, y: 10, z: -2}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -2771,7 +2771,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startCandleNum: 10
   _cleanRange: 2
-  _playerMoveSpeed: 10
+  _playerMoveSpeed: 5
   _playerTurnSpeed: 1000
 --- !u!4 &1396108842
 Transform:
@@ -3307,7 +3307,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2811629277406967769, guid: c1805840259e95640b6c060621535d99, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 6.77
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 2811629277406967769, guid: c1805840259e95640b6c060621535d99, type: 3}
       propertyPath: m_LocalPosition.y
