@@ -97,6 +97,13 @@ namespace GameMainSpace
 				}
 			}
 
+			var candleList = MasuGimicManager.GetCandleList();
+			foreach( var masuGimic_candle in candleList )
+			{
+				var dif = (Player.Pos - masuGimic_candle.Pos).sqrMagnitude;
+				bool active = (dif < 400 );
+				masuGimic_candle.SetActiveLight( active );
+			}
 		}
 
 		float PlayerSpace.Player.IPlayer.MoveSpeed => DefineInterface.PlayerMoveSpeed;

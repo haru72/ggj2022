@@ -42,5 +42,12 @@ namespace GameMainSpace.MasuGimicSpace
 			return _canTouch;
 		}
 
+		public Vector3 Pos => MasuGimicBehaviour.transform.position;
+
+		public void SetActiveLight( bool active )
+		{
+			LightObj.SetActive( active & (!_canTouch) );
+		}
+
 	}
 }

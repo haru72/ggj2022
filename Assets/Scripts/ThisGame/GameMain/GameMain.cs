@@ -18,6 +18,7 @@ namespace GameMainSpace
 			GameMainData.Player.SetPos( pos );
 			GameMainData.CameraController.Setup( pos );
 
+
 			SystemController.GetInstance().SystemBehaviour.StartCoroutine( StartupCoroutine() );
 		}
 
@@ -128,6 +129,8 @@ namespace GameMainSpace
 			{
 				masuGimic.Action();
 				GameMainData.Player.LightupCandle();
+				var candleNum = GameMainData.Player.GetSetCandleNum - 1;
+				GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
 			}
 
 
