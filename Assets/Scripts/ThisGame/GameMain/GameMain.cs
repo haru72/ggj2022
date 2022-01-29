@@ -8,10 +8,12 @@ namespace GameMainSpace
 	{
 		GameMainData GameMainData { get; }
 
-
-		public GameMain( GameObject gameObject )
+		public GameMain( GameMainScene gameMainScene )
 		{
-			GameMainData = new GameMainData( gameObject );
+			GameMainData = new GameMainData( gameMainScene.gameObject , gameMainScene );
+
+			GameMainData.Player.GetSetCandleNum = GameMainData.DefineInterface.StartCandleNum;
+			GameMainData.UIGameMainManager.SetCandleNum( GameMainData.Player.GetSetCandleNum );
 		}
 
 		public void Update()
@@ -51,15 +53,15 @@ namespace GameMainSpace
 				GameMainData.Player.Move( nextPos );
 			} else if( Input.GetKeyDown(  KeyCode.Space ) )
 			{
-				bool isLookCandle = InputAction_Candle();
-
-				if( ! isLookCandle )
+				if( GameMainData.Player.GetSetCandleNum > 1 )
 				{
-					InputAction_Curse();
+					bool isLookCandle = InputAction_Candle();
+					if( !isLookCandle )
+					{
+						InputAction_Curse();
+					}
 				}
-
 			}
-
 
 			GameMainData.Player.Update();
 			GameMainData.CleanController.Update();
@@ -93,7 +95,8 @@ namespace GameMainSpace
 		void InputAction_Curse()
 		{
 			var playerMasu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
-			var masuList = GameMainData.GameMainUtility.CalcForwardMasuList( playerMasu , GameMainData.Player.GetForward , 2 );
+			var masuList = GameMainData.GameMainUtility.CalcForwardMasuList(
+				playerMasu , GameMainData.Player.GetForward , GameMainData.DefineInterface.CleanRange );
 			var posList = new List<Vector3>();
 			foreach( var masu in masuList )
 			{
@@ -107,13 +110,17 @@ namespace GameMainSpace
 					masuGimic.CanTouch()
 				)
 				{
-					Debug.Log( "assaffdg" );
 					masuGimic.Action();
 				}
 			}
 
 			//浄化発生
 			GameMainData.CleanController.Setup( posList );
+
+			var candleNum = GameMainData.Player.GetSetCandleNum - 1;
+			GameMainData.Player.GetSetCandleNum = candleNum;
+			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
+
 		}
 
 	}
