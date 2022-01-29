@@ -17,8 +17,33 @@ namespace GameMainSpace
 		{
 			var masu = GameMainData.PanelController.CalcMasuByPos( new Vector3( pos.x , 0 , pos.z ) );
 			bool isInWall = GameMainData.WallManager.IsInWall( masu );
+			if( isInWall )
+			{
+				return true;
+			}
 
-			return isInWall;
+			var masuGimicGoal = GameMainData.MasuGimicManager.GetMasuGimic( masu, MasuGimicSpace.GimicType.Goal );
+			if( masuGimicGoal != null && masuGimicGoal.CanTouch() )
+			{
+				if( GameMainData.Player.GetSetKeyNum <= 0 )
+				{
+					return true;
+				}
+			}
+
+			return false;
+		}
+
+		public void ChangeCandleNum( int candleNum )
+		{
+			GameMainData.Player.GetSetCandleNum = candleNum;
+			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
+
+			if( GameMainData.Player.GetSetCandleNum <= 0 )
+			{
+				//GameOver
+			}
+
 		}
 
 		public Vector2Int CalcForwardMasu( Vector2Int nowMasu , Vector3 forward )

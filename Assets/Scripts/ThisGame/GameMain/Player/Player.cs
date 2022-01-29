@@ -17,8 +17,8 @@ namespace GameMainSpace.PlayerSpace
 		GameObject GameObject { get; }
 		IPlayer PlayerInterface { get; }
 
-		int m_candleNum = 10;			// ろうそく所持数
-
+		int m_candleNum = 10;           // ろうそく所持数
+		int m_keyNum = 0;
 		bool m_isMove = false;		// 現在動いているかどうかのフラグ
 		bool m_isTurn = false;		// 現在回転しているかどうかのフラグ
 		Vector3 m_nextMasuPos;		// 移動先のマスの座標
@@ -47,6 +47,11 @@ namespace GameMainSpace.PlayerSpace
 			get { return m_candleNum; }
 			set { if (0 < m_candleNum) m_candleNum = value; }
 		}
+		public int GetSetKeyNum
+		{
+			get { return m_keyNum; }
+			set { m_keyNum = value; }
+		}
 
 		public Vector3 GetNowMasu
         {
@@ -66,8 +71,15 @@ namespace GameMainSpace.PlayerSpace
 			m_nextMasuPos = nextMasu + Vector3.zero;
 			// 移動先のマスへの回転量
 			m_NextMasuRot = Quaternion.LookRotation(m_nextMasuPos - GameObject.transform.position, Vector3.up);
-			m_isTurn = true;
-			if (PlayerInterface.CanMove(m_nextMasuPos)) m_isMove = true;
+
+			if( GameObject.transform.rotation != m_NextMasuRot )
+			{
+				m_isTurn = true;
+			}
+			else if( PlayerInterface.CanMove( m_nextMasuPos ) )
+			{
+				m_isMove = true;
+			}
 		}
 
 		private void TurnNextMasu()

@@ -11,9 +11,13 @@ namespace GameMainSpace.MasuGimicSpace
 		{
 			{ GimicType.Candlestick , typeof(MasuGimic_Candle) },
 			{ GimicType.Curse , typeof(MasuGimic_Curse) },
+			{ GimicType.Key , typeof(MasuGimic_Key) },
+			{ GimicType.Goal , typeof(MasuGimic_Goal) },
 		};
 
-		Dictionary<string,MasuGimic> _masuGimicDic = new Dictionary<string, MasuGimic>();
+		List<MasuGimic> _masuGimicList = new List<MasuGimic>();
+		Dictionary<string , Dictionary<GimicType ,int>> _indexDicDic = new Dictionary<string , Dictionary<GimicType , int>>();
+
 		public MasuGimicManager( Transform transform , Func<Vector3 , Vector2Int> calcMasuByPos )
 		{
 			var masuGimicBehaviourAry = transform.GetComponentsInChildren<MasuGimicBehaviour>();
@@ -23,7 +27,12 @@ namespace GameMainSpace.MasuGimicSpace
 				var str = ToDicKey( masu );
 				
 				var masuGimic = ( MasuGimic)Activator.CreateInstance( SubClassDic[ masuGimicBehaviour.GimicType ] , new object[]{ masuGimicBehaviour } );
-				_masuGimicDic.Add( str , masuGimic );
+				if( ! _indexDicDic.ContainsKey( str ) )
+				{
+					_indexDicDic.Add( str , new Dictionary<GimicType , int>() );
+				}
+				_indexDicDic[ str ].Add( masuGimicBehaviour.GimicType , _masuGimicList.Count );
+				_masuGimicList.Add( masuGimic );
 			}
 		}
 
@@ -32,21 +41,44 @@ namespace GameMainSpace.MasuGimicSpace
 			return ( masu.x + "_" + masu.y );
 		}
 
-		public MasuGimic GetMasuGimic( Vector2Int masu )
+		public MasuGimic GetMasuGimic( Vector2Int masu , GimicType gimicType )
 		{
 			var str = ToDicKey( masu );
-			if( ! _masuGimicDic.ContainsKey( str ) )
+			if( !_indexDicDic.ContainsKey( str ) )
 			{
 				return null;
 			}
-			return _masuGimicDic[ str ];
+
+			if( !_indexDicDic[str].ContainsKey( gimicType ) )
+			{
+				return null;
+			}
+			return _masuGimicList[ _indexDicDic[ str ][ gimicType ] ];
+		}
+
+		public List<MasuGimic> GetMasuGimicList( Vector2Int masu )
+		{
+			var str = ToDicKey( masu );
+			if( !_indexDicDic.ContainsKey( str ) )
+			{
+				return null;
+			}
+
+			var dic = _indexDicDic[ str ];
+			var ret = new List<MasuGimic>();
+			foreach( var keyValue in dic )
+			{
+				ret.Add( _masuGimicList[ keyValue.Value ] );
+			}
+
+			return ret;
 		}
 
 		public void Update()
 		{
-			foreach( var keyValue in _masuGimicDic )
+			foreach( var masuGimic in _masuGimicList )
 			{
-				keyValue.Value.Update();
+				masuGimic.Update();
 			}
 		}
 	}

@@ -7,6 +7,8 @@ namespace GameMainSpace.MasuGimicSpace
 	{
 		Curse,
 		Candlestick,
+		Key,
+		Goal,
 	}
 	public class MasuGimicBehaviour : MonoBehaviour
 	{
