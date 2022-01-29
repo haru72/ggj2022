@@ -29,7 +29,7 @@ public class UIGameMainManager : MonoBehaviour
 	void Update()
     {
 		// TODO デバッグ用
-#if true
+#if false
 		if(Input.GetKeyDown(KeyCode.Alpha1)){
 			SetCandleNum(1);
 		}
