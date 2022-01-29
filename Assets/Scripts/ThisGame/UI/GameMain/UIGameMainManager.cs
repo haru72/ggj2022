@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIGameMainManager : MonoBehaviour
 {
@@ -17,11 +18,16 @@ public class UIGameMainManager : MonoBehaviour
     {
         m_candleNum = m_candleNumObj.GetComponent<CandleNum>();
 		m_tutorial = m_tutorialObj.GetComponent<Tutorial>();
+
+		// TODO フェードのデバッグ
+		//SceneManager.LoadScene("Fade", LoadSceneMode.Additive);
     }
 
     // Update is called once per frame
     void Update()
     {
+		// TODO デバッグ用
+		/*
 		if(Input.GetKeyDown(KeyCode.A)){
 			TutorialPrevPage();
 		}
@@ -40,6 +46,13 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.H)){
 			GameUIClose();
 		}
+		if(Input.GetKeyDown(KeyCode.Z)){
+			FadeManager.FadeOut();
+		}
+		if(Input.GetKeyDown(KeyCode.X)){
+			FadeManager.FadeIn();
+		}
+		*/
     }
 	/// <summary>
 	/// ゲームUI開始
