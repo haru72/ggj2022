@@ -20,7 +20,7 @@ public class GameMainScene : MonoBehaviour , GameMainSpace.GameMainData.IDefine
 	float GameMainSpace.GameMainData.IDefine.PlayerTurnSpeed => _playerTurnSpeed;
 
 	GameMainSpace.GameMain _gameMain;
-	void Start()
+	void Awake()
 	{
 		Application.targetFrameRate = 60;
 		_gameMain = new GameMainSpace.GameMain( this );

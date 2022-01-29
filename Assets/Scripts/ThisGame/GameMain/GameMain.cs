@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 
 namespace GameMainSpace
@@ -11,10 +12,18 @@ namespace GameMainSpace
 		public GameMain( GameMainScene gameMainScene )
 		{
 			GameMainData = new GameMainData( gameMainScene.gameObject , gameMainScene );
+			
+			SystemController.GetInstance().SystemBehaviour.StartCoroutine( StartupCoroutine() );
+		}
+
+		IEnumerator StartupCoroutine()
+		{
+			yield return null;
 
 			GameMainData.Player.GetSetCandleNum = GameMainData.DefineInterface.StartCandleNum;
 			GameMainData.UIGameMainManager.SetCandleNum( GameMainData.Player.GetSetCandleNum );
 		}
+
 
 		public void Update()
 		{
