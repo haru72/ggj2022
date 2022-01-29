@@ -16,8 +16,8 @@ namespace GameMainSpace.PlayerSpace
 		GameObject GameObject { get; }
 		IPlayer PlayerInterface { get; }
 
-		[SerializeField] float m_moveSpeed = 3.0f;		// 移動スピード
-		[SerializeField] float m_turnSpeed = 540.0f;    // 回転スピード
+		[SerializeField] float m_moveSpeed = 10.0f;		// 移動スピード
+		[SerializeField] float m_turnSpeed = 2000.0f;   // 回転スピード
 		[SerializeField] int m_candleNum = 10;			// ろうそく初期所持数
 
 		bool m_isMove = false;		// 現在動いているかどうかのフラグ
@@ -62,12 +62,10 @@ namespace GameMainSpace.PlayerSpace
 
 			// 移動先のマスの座標
 			m_nextMasuPos = nextMasu + Vector3.zero;
-			if (!PlayerInterface.CanMove(m_nextMasuPos)) return; // 移動不可
 			// 移動先のマスへの回転量
 			m_NextMasuRot = Quaternion.LookRotation(m_nextMasuPos - GameObject.transform.position, Vector3.up);
-
-			m_isMove = true;
 			m_isTurn = true;
+			if (PlayerInterface.CanMove(m_nextMasuPos)) m_isMove = true;
 		}
 
 		private void TurnNextMasu()
