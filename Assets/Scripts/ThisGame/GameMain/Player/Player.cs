@@ -141,6 +141,7 @@ namespace GameMainSpace.PlayerSpace
 				m_isTurn = false;
 				//MyAnimation.SetBool( "IsWalk" , false );
 				MyAnimation.Play( "Stay");
+				PlayerInterface.FinishMove(GameObject.transform.position);
 			}
 		}
 

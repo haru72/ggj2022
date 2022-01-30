@@ -27,6 +27,8 @@ namespace GameMainSpace
 		public PhaseSpace.PhaseController PhaseController { get; }
 		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
+		public Canvas Canvas { get; }
+
 		public IDefine DefineInterface { get; }
 
 		public GameMainData(GameObject gameObject , IDefine defineInterface )
@@ -53,6 +55,8 @@ namespace GameMainSpace
 					SceneController.GetInstance().ChangeScene( "Title" );
 				}
 			);
+
+			Canvas = gameObject.transform.Find( "Canvas" ).GetComponent<Canvas>();
 
 			PhaseController = new PhaseSpace.PhaseController( this );
 
@@ -116,6 +120,34 @@ namespace GameMainSpace
 					PhaseController.ChangePhase( PhaseSpace.PhaseType.GameClear );
 				}
 			}
+
+			//キャンドル前
+			{
+				var playerMasu = PanelController.CalcMasuByPos( Player.GetNowMasu );
+				var forwardMasu = GameMainUtility.CalcForwardMasu( playerMasu , Player.GetForward );
+
+				var masuGimic = MasuGimicManager.GetMasuGimic( forwardMasu , MasuGimicSpace.GimicType.Candlestick );
+				if( masuGimic != null )
+				{
+					var screenPos = RectTransformUtility.WorldToScreenPoint( Camera.main , Player.GetNowMasu + new Vector3( 0.5f , 3 , 0 ) );
+
+					var pos = new Vector2(
+						( screenPos.x - Screen.width / 2 ) * 1f / Canvas.transform.localScale.x ,
+						( screenPos.y - Screen.height / 2 ) * 1f / Canvas.transform.localScale.y
+					);
+
+					UIGameMainManager.CandleSpeechBubbleOpenCanUse( pos );
+				}
+				else
+				{
+					UIGameMainManager.CandleSpeechBubbleClose();
+				}
+			}
+
+
+
+
+
 
 			var candleList = MasuGimicManager.GetCandleList();
 			foreach( var masuGimic_candle in candleList )
