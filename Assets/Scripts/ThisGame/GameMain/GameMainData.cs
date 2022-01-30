@@ -24,6 +24,7 @@ namespace GameMainSpace
 		public CameraSpace.CameraController CameraController { get; }
 		public GameOver GameOver { get; }
 
+		public PhaseSpace.PhaseController PhaseController { get; }
 		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
 		public IDefine DefineInterface { get; }
@@ -52,6 +53,8 @@ namespace GameMainSpace
 					SceneController.GetInstance().ChangeScene( "Title" );
 				}
 			);
+
+			PhaseController = new PhaseSpace.PhaseController( this );
 
 		}
 
