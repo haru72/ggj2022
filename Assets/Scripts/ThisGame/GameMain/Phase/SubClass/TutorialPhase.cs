@@ -14,13 +14,11 @@ namespace GameMainSpace.PhaseSpace
 		{
 			if( Input.GetKeyDown(KeyCode.Space) )
 			{
-				/*
-				if(  )
+				if( ! GameMainData.UIGameMainManager.IsTutorialLast() )
 				{
 					GameMainData.UIGameMainManager.TutorialNextPage();
 				}
 				else
-				*/
 				{
 					GameMainData.UIGameMainManager.TutorialClose();
 					GameMainData.PhaseController.ChangePhase( PhaseType.Main );
