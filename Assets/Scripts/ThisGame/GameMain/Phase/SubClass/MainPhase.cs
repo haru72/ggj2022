@@ -112,6 +112,7 @@ namespace GameMainSpace.PhaseSpace
 				GameMainData.Player.LightupCandle();
 				var candleNum = GameMainData.Player.GetSetCandleNum - 1;
 				GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
+				GameMainData.UIGameMainManager.AppearCandleMinus();
 			}
 
 			return true;
@@ -142,6 +143,7 @@ namespace GameMainSpace.PhaseSpace
 			GameMainData.Player.Purify();
 			var candleNum = GameMainData.Player.GetSetCandleNum - 1;
 			GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
+			GameMainData.UIGameMainManager.AppearCandleMinus();
 		}
 
 	}

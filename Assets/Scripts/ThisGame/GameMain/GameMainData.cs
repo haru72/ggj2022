@@ -74,6 +74,8 @@ namespace GameMainSpace
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
 					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
+					UIGameMainManager.AppearCandleMinus();
+
 					masuGimic.Action();
 
 					if( Player.GetSetCandleNum <= 0 )
