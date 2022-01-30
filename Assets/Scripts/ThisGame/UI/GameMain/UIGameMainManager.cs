@@ -11,6 +11,8 @@ public class UIGameMainManager : MonoBehaviour
 	GameObject m_candleNumObj;
 	[SerializeField]
 	GameObject m_tutorialObj;
+	[SerializeField]
+	SpeechBubble m_SpeechBubble;
 	CandleNum m_candleNum;
 	Tutorial m_tutorial;
     // Start is called before the first frame update
@@ -63,6 +65,12 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.X)){
 			FadeManager.FadeIn();
 		}
+		if(Input.GetKeyDown(KeyCode.C)){
+			SpeechBubbleOpen(new Vector3(300, 160, 0), "おじいちゃんのロウソク 暖かいな……");
+		}
+		if(Input.GetKeyDown(KeyCode.V)){
+			SpeechBubbleClose();
+		}
 #endif
     }
 	/// <summary>
@@ -108,5 +116,21 @@ public class UIGameMainManager : MonoBehaviour
 	/// </summary>
 	public void TutorialPrevPage(){
 		m_tutorial.PrevPage();
+	}
+
+	/// <summary>
+	/// 吹き出し開始
+	/// </summary>
+	/// <param name="pos">表示する座標</param>
+	/// <param name="text">表示する文字列</param>
+	public void SpeechBubbleOpen(Vector3 pos, string text){
+		m_SpeechBubble.Open(pos, text);
+	}
+
+	/// <summary>
+	/// 吹き出し終了
+	/// </summary>
+	public void SpeechBubbleClose(){
+		m_SpeechBubble.Close();
 	}
 }
