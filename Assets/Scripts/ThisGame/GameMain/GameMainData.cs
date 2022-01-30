@@ -22,6 +22,7 @@ namespace GameMainSpace
 		public CleanSpace.CleanController CleanController { get; }
 		public UIGameMainManager UIGameMainManager { get; }
 		public CameraSpace.CameraController CameraController { get; }
+		public GameOver GameOver { get; }
 
 		public GameMainUtility GameMainUtility => new GameMainUtility( this );
 
@@ -45,7 +46,15 @@ namespace GameMainSpace
 			CameraController = new CameraSpace.CameraController();
 
 			UIGameMainManager = gameObject.transform.Find( "UIGameMainManager" ).GetComponent<UIGameMainManager>();
+
+			GameOver = new GameOver( gameObject.transform.Find( "GameOverCanvas" ).gameObject ,
+				()=> {
+					SceneController.GetInstance().ChangeScene( "Title" );
+				}
+			);
+
 		}
+
 
 		bool PlayerSpace.Player.IPlayer.CanMove( Vector3 nextMasu )
 		{
@@ -68,6 +77,7 @@ namespace GameMainSpace
 					{
 						//GameOver
 						Player.Dead();
+						GameOver.SetActive( true );
 					}
 					else
 					{

@@ -133,7 +133,6 @@ namespace GameMainSpace
 				GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
 			}
 
-
 			return true;
 		}
 
