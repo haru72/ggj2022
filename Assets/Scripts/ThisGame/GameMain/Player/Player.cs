@@ -81,6 +81,7 @@ namespace GameMainSpace.PlayerSpace
 
 		public void LightupCandle()
 		{
+			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.LightFire );
 			MyAnimation.Play( "Light" );
 		}
 		public void Damage()
@@ -89,6 +90,7 @@ namespace GameMainSpace.PlayerSpace
 		}
 		public void Pickup()
 		{
+			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.GetKey );
 			MyAnimation.Play( "PickUp" );
 		}
 		public void Dead()
@@ -97,6 +99,7 @@ namespace GameMainSpace.PlayerSpace
 		}
 		public void Purify()
 		{
+			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.Purify );
 			MyAnimation.Play( "Purify" );
 		}
 
