@@ -11,6 +11,10 @@ public class UIGameMainManager : MonoBehaviour
 	GameObject m_candleNumObj;
 	[SerializeField]
 	GameObject m_tutorialObj;
+	[SerializeField]
+	SpeechBubble m_SpeechBubble;
+	[SerializeField]
+	CandleMinus m_candleMinus;
 	CandleNum m_candleNum;
 	Tutorial m_tutorial;
     // Start is called before the first frame update
@@ -57,11 +61,22 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.H)){
 			GameUIClose();
 		}
+		/*
 		if(Input.GetKeyDown(KeyCode.Z)){
 			FadeManager.FadeOut();
 		}
 		if(Input.GetKeyDown(KeyCode.X)){
 			FadeManager.FadeIn();
+		}
+		*/
+		if(Input.GetKeyDown(KeyCode.C)){
+			SpeechBubbleOpen(new Vector3(300, 160, 0), "おじいちゃんのロウソク 暖かいな……");
+		}
+		if(Input.GetKeyDown(KeyCode.V)){
+			SpeechBubbleClose();
+		}
+		if(Input.GetKeyDown(KeyCode.B)){
+			AppearCandleMinus();
 		}
 #endif
     }
@@ -108,5 +123,35 @@ public class UIGameMainManager : MonoBehaviour
 	/// </summary>
 	public void TutorialPrevPage(){
 		m_tutorial.PrevPage();
+	}
+	/// <summary>
+	/// チュートリアル画像が最後まで進んだか？
+	/// </summary>
+	/// <returns>true:最後 false:最後以外</returns>
+	public bool IsTutorialLast(){
+		return m_tutorial.IsTutorialLast();
+	}
+
+	/// <summary>
+	/// 吹き出し開始
+	/// </summary>
+	/// <param name="pos">表示する座標</param>
+	/// <param name="text">表示する文字列</param>
+	public void SpeechBubbleOpen(Vector3 pos, string text){
+		m_SpeechBubble.Open(pos, text);
+	}
+
+	/// <summary>
+	/// 吹き出し終了
+	/// </summary>
+	public void SpeechBubbleClose(){
+		m_SpeechBubble.Close();
+	}
+
+	/// <summary>
+	/// キャンドル所持数減少時のエフェクトを表示
+	/// </summary>
+	public void AppearCandleMinus(){
+		m_candleMinus.Appear();
 	}
 }
