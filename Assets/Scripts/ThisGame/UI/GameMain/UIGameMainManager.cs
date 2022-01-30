@@ -13,6 +13,8 @@ public class UIGameMainManager : MonoBehaviour
 	GameObject m_tutorialObj;
 	[SerializeField]
 	SpeechBubble m_SpeechBubble;
+	[SerializeField]
+	CandleMinus m_candleMinus;
 	CandleNum m_candleNum;
 	Tutorial m_tutorial;
     // Start is called before the first frame update
@@ -59,17 +61,22 @@ public class UIGameMainManager : MonoBehaviour
 		if(Input.GetKeyDown(KeyCode.H)){
 			GameUIClose();
 		}
+		/*
 		if(Input.GetKeyDown(KeyCode.Z)){
 			FadeManager.FadeOut();
 		}
 		if(Input.GetKeyDown(KeyCode.X)){
 			FadeManager.FadeIn();
 		}
+		*/
 		if(Input.GetKeyDown(KeyCode.C)){
 			SpeechBubbleOpen(new Vector3(300, 160, 0), "おじいちゃんのロウソク 暖かいな……");
 		}
 		if(Input.GetKeyDown(KeyCode.V)){
 			SpeechBubbleClose();
+		}
+		if(Input.GetKeyDown(KeyCode.B)){
+			AppearCandleMinus();
 		}
 #endif
     }
@@ -132,5 +139,12 @@ public class UIGameMainManager : MonoBehaviour
 	/// </summary>
 	public void SpeechBubbleClose(){
 		m_SpeechBubble.Close();
+	}
+
+	/// <summary>
+	/// キャンドル所持数減少時のエフェクトを表示
+	/// </summary>
+	public void AppearCandleMinus(){
+		m_candleMinus.Appear();
 	}
 }
