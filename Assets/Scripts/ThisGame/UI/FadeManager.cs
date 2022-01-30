@@ -21,6 +21,7 @@ public class FadeManager : MonoBehaviour
 	float m_timer;
 	Image m_image;
 	Image m_tipsImage;
+	System.Action m_fadeEndAction;
 
 	// Start is called before the first frame update
 	void Start()
@@ -45,6 +46,8 @@ public class FadeManager : MonoBehaviour
 				if (m_timer <= 0.0f) {
 					color.a = 0.0f;
 					phase = ePhase.In;
+					m_fadeEndAction?.Invoke();
+					m_fadeEndAction = null;
 				} else {
 					color = Color.Lerp(colorIn, colorOut, m_timer / m_fadeTime);
 				}
@@ -55,25 +58,31 @@ public class FadeManager : MonoBehaviour
 				if (m_timer <= 0.0f) {
 					color.a = 1.0f;
 					phase = ePhase.Out;
-				} else {
-					color = Color.Lerp(colorOut, colorIn, m_timer / m_fadeTime);
+					m_fadeEndAction?.Invoke();
+					m_fadeEndAction = null;
+				}
+					else
+					{
+						color = Color.Lerp(colorOut, colorIn, m_timer / m_fadeTime);
 				}
 				m_image.color = color;
 				break;
 			}
 		}
     }
-	public static void FadeIn()
+	public static void FadeIn( System.Action endCallback )
 	{
 		if(m_instance==null) { return; }
 		m_instance.phase = ePhase.FadeIn;
 		m_instance.m_timer = m_instance.m_fadeTime;
+		m_instance.m_fadeEndAction = endCallback;
 	}
-	public static void FadeOut()
+	public static void FadeOut( System.Action endCallback )
 	{
 		if (m_instance == null) { return; }
 		m_instance.phase = ePhase.FadeOut;
 		m_instance.m_timer = m_instance.m_fadeTime;
+		m_instance.m_fadeEndAction = endCallback;
 	}
 	public static bool IsFadeEnd()
 	{
@@ -90,4 +99,10 @@ public class FadeManager : MonoBehaviour
 		if (m_instance == null) { return; }
 		m_instance.m_tipsImage.gameObject.SetActive(false);
 	}
+
+	public static bool IsActive()
+	{
+		return (m_instance != null);
+	}
+
 }
