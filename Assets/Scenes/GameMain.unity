@@ -262,6 +262,8 @@ MonoBehaviour:
   m_gameUIObj: {fileID: 684188407}
   m_candleNumObj: {fileID: 1848279441}
   m_tutorialObj: {fileID: 1470679722}
+  m_SpeechBubble: {fileID: 0}
+  m_candleMinus: {fileID: 0}
 --- !u!1001 &166872597
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1652,7 +1654,6 @@ GameObject:
   m_Component:
   - component: {fileID: 223659412}
   - component: {fileID: 223659411}
-  - component: {fileID: 223659410}
   - component: {fileID: 223659413}
   m_Layer: 0
   m_Name: Main Camera
@@ -1661,14 +1662,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!81 &223659410
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 223659409}
-  m_Enabled: 1
 --- !u!20 &223659411
 Camera:
   m_ObjectHideFlags: 0

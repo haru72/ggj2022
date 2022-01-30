@@ -24,9 +24,12 @@ namespace GameMainSpace
 
 		IEnumerator StartupCoroutine()
 		{
+
 			yield return null;
 			GameMainData.GameMainUtility.ChangeCandleNum( GameMainData.DefineInterface.StartCandleNum );
 			FadeManager.FadeIn( null );
+			MyAudioController.GetInstance().PlayBGM( MyAudioController.BGMType.Game );
+
 		}
 
 

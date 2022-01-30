@@ -5,36 +5,24 @@ using System.Collections.Generic;
 
 public class MyAudioController : Singleton<MyAudioController>
 {
+	public enum BGMType
+	{
+		None,
+		Title,
+		Game,
+		Clear,
+		EnumEnd,
+	}
 	public enum SoundType
 	{
 		None,
-		TitleBGM,
-		HomeBGM,
-		BattleBGM,
-		PutCard,
-		MoveChara,
-		Confetti,
-		Hit,
-		SlideIn,
-		SlideOut,
-		EquipLevelUp,
-		PlayerLevelUp,
-		Gimic_Warp,
-		Gimic_PowerUp,
-		Gimic_Coin,
 		Button_Default,
+		GetKey,
+		LightFire,
+		Purify,
+		Walk,
 
-		Action_Slash,
-		Action_Spear,
-		Action_Arrow,
-		Action_Bomb,
-		Action_Wind,
-		Action_Thunder,
-		Action_Drain,
-		Action_SmallBomb,
-		Action_Seal,
-		Action_Drain2,
-		Spin,
+		EnumEnd,
 	}
 	class DelaySE
 	{
@@ -42,45 +30,29 @@ public class MyAudioController : Singleton<MyAudioController>
 		public int _frameEnd;
 		public SoundType _soundType;
 	}
-
-	readonly Dictionary<SoundType , string> _soundDic = new Dictionary<SoundType , string>() {
-		{ SoundType.TitleBGM ,"Sound/BGM/WAV_Pure Feelings - Loop00"},
-		{ SoundType.HomeBGM ,"Sound/BGM/WAV_Summer Around Nature - Loop00"},
-		{ SoundType.BattleBGM ,"Sound/BGM/Downhill Chase LOOP"},
-		{ SoundType.PutCard ,"Sound/se_putCard"},
-		{ SoundType.Button_Default ,"Sound/se_buttonDefault"},
-		{ SoundType.MoveChara ,"Sound/se_charaMove"},
-		{ SoundType.Action_Slash ,"Sound/se_slash2"},
-		{ SoundType.Action_Spear ,"Sound/se_spear"},
-		{ SoundType.Action_Arrow ,"Sound/se_arrow"},
-		{ SoundType.Action_Bomb ,"Sound/se_bomb"},
-		{ SoundType.Action_Thunder ,"Sound/se_thunder"},
-		{ SoundType.Action_Drain ,"Sound/se_drain"},
-		{ SoundType.Action_Drain2 ,"Sound/se_drain2"},
-		{ SoundType.Action_SmallBomb ,"Sound/se_meteo2"},
-		{ SoundType.Action_Seal ,"Sound/se_seal"},
-		{ SoundType.Action_Wind ,"Sound/se_wind"},
-		{ SoundType.Hit ,"Sound/se_hit"},
-		{ SoundType.Gimic_Warp ,"Sound/se_warp"},
-		{ SoundType.Gimic_PowerUp ,"Sound/se_powerUp"},
-		{ SoundType.Gimic_Coin,"Sound/se_coin"},
-		{ SoundType.SlideIn ,"Sound/se_slideIn"},
-		{ SoundType.SlideOut ,"Sound/se_slideOut"},
-		{ SoundType.EquipLevelUp ,"Sound/se_levelUp_5"},
-		{ SoundType.PlayerLevelUp ,"Sound/se_levelUp"},
-		{ SoundType.Spin,"Sound/se_spin"},
-		{ SoundType.Confetti,"Sound/cracker"},
+	readonly Dictionary<BGMType , string> _bgmStrDic = new Dictionary<BGMType , string>() {
+		{ BGMType.Title ,"Sounds/TitleBGM"},
+		{ BGMType.Game ,"Sounds/PlayingBGM"},
+		{ BGMType.Clear ,"Sounds/ClearBGM"},
 	};
 
-	const float BGMVolumeBase = 0.3f;
+	readonly Dictionary<SoundType , string> _seStrDic = new Dictionary<SoundType , string>() {
+		{ SoundType.Button_Default ,"Sounds/GetKey"},
+		{ SoundType.GetKey,"Sounds/GetKey"},
+		{ SoundType.LightFire,"Sounds/LightFire"},
+		{ SoundType.Purify,"Sounds/PurifyCurse"},
+		{ SoundType.Walk,"Sounds/Walk"},
+	};
+
+	const float BGMVolumeBase = 0.2f;
 	const float SEVolumeBase = 0.3f;
 
-	SoundType _loadTargetBGM;
+	List<BGMType> _loadTargetBGMList = new List<BGMType>();
 	List<SoundType> _loadTargetSEList = new List<SoundType>();
 	AudioListener _audioListener;
 	AudioSource _audioSourceBGM;
 	AudioSource _audioSourceSE;
-	AudioClip _bgmAudioClip;
+	Dictionary<BGMType , AudioClip> _bgmAudioClipDic = new Dictionary<BGMType , AudioClip>();
 	Dictionary<SoundType , AudioClip> _seAudioClipDic = new Dictionary<SoundType , AudioClip>();
 
 	List<DelaySE> _delaySEList = new List<DelaySE>();
@@ -118,9 +90,24 @@ public class MyAudioController : Singleton<MyAudioController>
 		_audioSourceSE.volume = SEVolumeBase * volume;
 	}
 
-	public void AddLoadTarget_BGM( SoundType soundType )
+	public void AddLoadTarget_All()
 	{
-		_loadTargetBGM = soundType;
+		int cnt = (int)BGMType.EnumEnd;
+		for( int i = 0 ; i < cnt ; i++ )
+		{
+			_loadTargetBGMList.Add( (BGMType)i );
+		}
+
+		cnt = (int)SoundType.EnumEnd;
+		for( int i = 0 ; i < cnt ; i++ )
+		{
+			_loadTargetSEList.Add( (SoundType)i );
+		}
+	}
+
+	public void AddLoadTarget_BGM( BGMType bgmType )
+	{
+		_loadTargetBGMList.Add( bgmType );
 	}
 
 	public void AddLoadTarget_SE( SoundType soundType )
@@ -130,14 +117,22 @@ public class MyAudioController : Singleton<MyAudioController>
 
 	public IEnumerator LoadAsync()
 	{
-		_loadTargetSEList.Add( SoundType.Button_Default );
-
-		var resourceRequestDic = new Dictionary<SoundType , ResourceRequest >();
-
-		if( _soundDic.ContainsKey( _loadTargetBGM ) )
+		if( !_loadTargetSEList.Contains( SoundType.Button_Default ) )
 		{
-			resourceRequestDic.Add( _loadTargetBGM , Resources.LoadAsync<AudioClip>( _soundDic[ _loadTargetBGM ] ) );
+			_loadTargetSEList.Add( SoundType.Button_Default );
 		}
+
+		var resourceRequestDic_BGM = new Dictionary<BGMType , ResourceRequest>();
+		var resourceRequestDic_SE = new Dictionary<SoundType , ResourceRequest>();
+
+		foreach( var loadTarget in _loadTargetBGMList )
+		{
+			if( _bgmStrDic.ContainsKey( loadTarget ) )
+			{
+				resourceRequestDic_BGM.Add( loadTarget , Resources.LoadAsync<AudioClip>( _bgmStrDic[ loadTarget ] ) );
+			}
+		}
+
 
 		foreach( var loadTarget in _loadTargetSEList )
 		{
@@ -145,19 +140,19 @@ public class MyAudioController : Singleton<MyAudioController>
 			{
 				continue;
 			}
-			if( ! _soundDic.ContainsKey( loadTarget ) )
+			if( !_seStrDic.ContainsKey( loadTarget ) )
 			{
 				continue;
 			}
 
-			resourceRequestDic.Add( loadTarget , Resources.LoadAsync<AudioClip>( _soundDic[ loadTarget ] ) );
+			resourceRequestDic_SE.Add( loadTarget , Resources.LoadAsync<AudioClip>( _seStrDic[ loadTarget ] ) );
 		}
 
 		bool isLoadResources = true;
 		do
 		{
 			isLoadResources = false;
-			foreach( var keyValue in resourceRequestDic )
+			foreach( var keyValue in resourceRequestDic_SE )
 			{
 				var resourceRequest = keyValue.Value;
 				if( !resourceRequest.isDone )
@@ -170,17 +165,40 @@ public class MyAudioController : Singleton<MyAudioController>
 		} while( isLoadResources );
 
 
-
-		if( _loadTargetBGM != SoundType.None )
+		isLoadResources = false;
+		do
 		{
-			_bgmAudioClip = GameObject.Instantiate<AudioClip>( resourceRequestDic[ _loadTargetBGM ].asset as AudioClip );
-			if( _audioSourceBGM.clip == null ||  _audioSourceBGM.clip.name != _bgmAudioClip .name )
+			isLoadResources = false;
+			foreach( var keyValue in resourceRequestDic_BGM )
 			{
-				_audioSourceBGM.clip = _bgmAudioClip;
-				_audioSourceBGM.Play();
+				var resourceRequest = keyValue.Value;
+				if( !resourceRequest.isDone )
+				{
+					isLoadResources = true;
+					break;
+				}
+			}
+			yield return null;
+		} while( isLoadResources );
+
+
+		foreach( var loadTarget in _loadTargetBGMList )
+		{
+			if( _bgmAudioClipDic.ContainsKey( loadTarget ) )
+			{
+				continue;
+			}
+			if( !_bgmStrDic.ContainsKey( loadTarget ) )
+			{
+				continue;
 			}
 
+			var audioClip = GameObject.Instantiate<AudioClip>(
+				resourceRequestDic_BGM[ loadTarget ].asset as AudioClip
+			);
+			_bgmAudioClipDic.Add( loadTarget , audioClip );
 		}
+
 
 		foreach( var loadTarget in _loadTargetSEList )
 		{
@@ -188,17 +206,18 @@ public class MyAudioController : Singleton<MyAudioController>
 			{
 				continue;
 			}
-			if( !_soundDic.ContainsKey( loadTarget ) )
+			if( !_seStrDic.ContainsKey( loadTarget ) )
 			{
 				continue;
 			}
 
 			var audioClip = GameObject.Instantiate<AudioClip>(
-				resourceRequestDic[ loadTarget ].asset as AudioClip
+				resourceRequestDic_SE[ loadTarget ].asset as AudioClip
 			);
 			_seAudioClipDic.Add( loadTarget , audioClip );
 		}
 
+		_loadTargetBGMList.Clear();
 		_loadTargetSEList.Clear();
 		_enable = true;
 	}
@@ -209,15 +228,30 @@ public class MyAudioController : Singleton<MyAudioController>
 		_enable = false;
 	}
 
-
-	public void PlaySE( SoundType soundType )
+	public void PlayBGM( BGMType bgmType )
 	{
-		if( ! _enable )
+		if( !_enable )
 		{
 			return;
 		}
 
-		if( ! _seAudioClipDic.ContainsKey( soundType ) )
+		if( !_bgmAudioClipDic.ContainsKey( bgmType ) )
+		{
+			return;
+		}
+
+		_audioSourceBGM.clip = _bgmAudioClipDic[ bgmType ];
+		_audioSourceBGM.Play();
+	}
+
+	public void PlaySE( SoundType soundType )
+	{
+		if( !_enable )
+		{
+			return;
+		}
+
+		if( !_seAudioClipDic.ContainsKey( soundType ) )
 		{
 			return;
 		}
@@ -226,7 +260,8 @@ public class MyAudioController : Singleton<MyAudioController>
 
 	public void DelayPlaySE( SoundType soundType , int frame )
 	{
-		_delaySEList.Add( new DelaySE() {
+		_delaySEList.Add( new DelaySE()
+		{
 			_soundType = soundType ,
 			_frameEnd = frame
 		} );

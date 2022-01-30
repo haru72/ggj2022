@@ -76,7 +76,7 @@ namespace GameMainSpace.PlayerSpace
 
 		public bool CanAction()
 		{
-			return MyAnimation.IsPlaying( "Stay" ) || MyAnimation.IsPlaying( "Walk" );
+			return MyAnimation.IsPlaying( "Stay" );
 		}
 
 		public void LightupCandle()
@@ -113,12 +113,14 @@ namespace GameMainSpace.PlayerSpace
 			if( GameObject.transform.rotation != m_NextMasuRot )
 			{
 				m_isTurn = true;
-				MyAnimation.SetBool( "IsWalk" , true );
+				MyAnimation.Play( "Walk" );
+				//MyAnimation.SetBool( "IsWalk" , true );
 			}
 			else if( PlayerInterface.CanMove( m_nextMasuPos ) )
 			{
 				m_isMove = true;
-				MyAnimation.SetBool( "IsWalk" , true );
+				MyAnimation.Play( "Walk");
+				//MyAnimation.SetBool( "IsWalk" , true );
 			}
 		}
 
@@ -134,7 +136,8 @@ namespace GameMainSpace.PlayerSpace
 			{
 				// 回転し終わったら回転フラグを下ろす
 				m_isTurn = false;
-				MyAnimation.SetBool( "IsWalk" , false );
+				//MyAnimation.SetBool( "IsWalk" , false );
+				MyAnimation.Play( "Stay");
 			}
 		}
 
@@ -150,7 +153,8 @@ namespace GameMainSpace.PlayerSpace
 				// 移動し終わったら移動フラグを下ろす
 				m_isMove = false;
 				PlayerInterface.FinishMove(GameObject.transform.position);
-				MyAnimation.SetBool( "IsWalk" , false );
+			//	MyAnimation.SetBool( "IsWalk" , false );
+				MyAnimation.Play( "Stay");
 			}
 		}
 	}
