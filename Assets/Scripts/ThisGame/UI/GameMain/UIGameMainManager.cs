@@ -124,6 +124,13 @@ public class UIGameMainManager : MonoBehaviour
 	public void TutorialPrevPage(){
 		m_tutorial.PrevPage();
 	}
+	/// <summary>
+	/// チュートリアル画像が最後まで進んだか？
+	/// </summary>
+	/// <returns>true:最後 false:最後以外</returns>
+	public bool IsTutorialLast(){
+		return m_tutorial.IsTutorialLast();
+	}
 
 	/// <summary>
 	/// 吹き出し開始

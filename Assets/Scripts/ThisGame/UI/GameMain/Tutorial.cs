@@ -41,7 +41,7 @@ public class Tutorial : MonoBehaviour
 	/// 次のページへ移動
 	/// </summary>
 	public void NextPage(){
-		if(m_imageIndex == m_images.Count-1){
+		if(IsTutorialLast()){
 			return;
 		}
 		m_images[m_imageIndex].gameObject.SetActive(false);
@@ -66,5 +66,13 @@ public class Tutorial : MonoBehaviour
 	/// </summary>
 	void ShowPageNow(){
 		m_pageNow.text = (m_imageIndex+1).ToString();
+	}
+
+	/// <summary>
+	/// チュートリアル画像が最後まで進んだか？
+	/// </summary>
+	/// <returns>true:最後 false:最後以外</returns>
+	public bool IsTutorialLast(){
+		return m_imageIndex == m_images.Count-1;
 	}
 }
