@@ -1,13 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Assets.Scripts.FramWork.Scene
 {
 	public class TitleScene : MonoBehaviour
 	{
-
 		void Awake()
 		{
+			if( !FadeManager.IsActive() )
+			{
+				SceneManager.LoadScene( "Fade" , LoadSceneMode.Additive );
+			}
+			else
+			{
+				FadeManager.FadeIn( null );
+			}
 		}
 
 		private void FixedUpdate()
@@ -16,9 +24,14 @@ namespace Assets.Scripts.FramWork.Scene
 
 		private void Update()
 		{
+			if( ! FadeManager.IsFadeEnd() )
+			{
+				return;
+			}
+
 			if( Input.GetKeyDown( KeyCode.Space ) )
 			{
-				SceneController.GetInstance().ChangeScene( "GameMain" );
+				FadeManager.FadeOut(()=> { SceneController.GetInstance().ChangeScene( "GameMain" ); } );
 			}
 		}
 
