@@ -15,6 +15,8 @@ public class UIGameMainManager : MonoBehaviour
 	SpeechBubble m_SpeechBubble;
 	[SerializeField]
 	CandleMinus m_candleMinus;
+	[SerializeField]
+	CandleSpeechBubble m_candleSpeechBubble;
 	CandleNum m_candleNum;
 	Tutorial m_tutorial;
     // Start is called before the first frame update
@@ -77,6 +79,15 @@ public class UIGameMainManager : MonoBehaviour
 		}
 		if(Input.GetKeyDown(KeyCode.B)){
 			AppearCandleMinus();
+		}
+		if(Input.GetKeyDown(KeyCode.N)){
+			CandleSpeechBubbleOpenCanUse(new Vector3(300, 160, 0));
+		}
+		if(Input.GetKeyDown(KeyCode.M)){
+			CandleSpeechBubbleOpenCanNotUse(new Vector3(300, 160, 0));
+		}
+		if(Input.GetKeyDown(KeyCode.K)){
+			CandleSpeechBubbleClose();
 		}
 #endif
     }
@@ -154,4 +165,25 @@ public class UIGameMainManager : MonoBehaviour
 	public void AppearCandleMinus(){
 		m_candleMinus.Appear();
 	}
+	/// <summary>
+	/// キャンドルが使えるよ吹き出し開始
+	/// </summary>
+	/// <param name="pos">表示する座標</param>
+	public void CandleSpeechBubbleOpenCanUse(Vector3 pos){
+		m_candleSpeechBubble.CanUseOpen(pos);
+	}
+	/// <summary>
+	/// キャンドルが使えないよ吹き出し開始
+	/// </summary>
+	/// <param name="pos">表示する座標</param>
+	public void CandleSpeechBubbleOpenCanNotUse(Vector3 pos){
+		m_candleSpeechBubble.CanNotUseOpen(pos);
+	}
+	/// <summary>
+	/// キャンドルが使えるよ・使えないよ吹き出し終了
+	/// </summary>
+	public void CandleSpeechBubbleClose(){
+		m_candleSpeechBubble.Close();
+	}
+	
 }
