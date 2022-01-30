@@ -12,7 +12,7 @@ namespace GameMainSpace.PhaseSpace
 
 		public override void Update()
 		{
-			if( Input.GetKeyDown(KeyCode.Space) )
+			if( InputManager.IsTriggerAction() )
 			{
 				if( ! GameMainData.UIGameMainManager.IsTutorialLast() )
 				{

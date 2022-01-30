@@ -30,7 +30,7 @@ namespace Assets.Scripts.FramWork.Scene
 				return;
 			}
 
-			if( Input.GetKeyDown( KeyCode.Space ) )
+			if( InputManager.IsTriggerAction() )
 			{
 				FadeManager.FadeOut( () => { SceneController.GetInstance().ChangeScene( "Title" ); } );
 			}

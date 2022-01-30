@@ -32,7 +32,7 @@ namespace GameMainSpace.PhaseSpace
 			}
 
 			// キー入力で移動
-			if( Input.GetKey( KeyCode.W ) ) // 上
+			if( InputManager.IsPressUp() ) // 上
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.y += 1;
@@ -40,14 +40,14 @@ namespace GameMainSpace.PhaseSpace
 
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKey( KeyCode.A ) ) // 左
+			else if( InputManager.IsPressLeft() ) // 左
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.x -= 1;
 				var nextPos = GameMainData.PanelController.CalcPosByMasu( masu );
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKey( KeyCode.S ) ) // 下
+			else if( InputManager.IsPressDown() ) // 下
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.y -= 1;
@@ -55,7 +55,7 @@ namespace GameMainSpace.PhaseSpace
 
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKey( KeyCode.D ) ) //右
+			else if( InputManager.IsPressRight() ) //右
 			{
 				var masu = GameMainData.PanelController.CalcMasuByPos( GameMainData.Player.GetNowMasu );
 				masu.x += 1;
@@ -63,7 +63,7 @@ namespace GameMainSpace.PhaseSpace
 
 				GameMainData.Player.Move( nextPos );
 			}
-			else if( Input.GetKeyDown( KeyCode.Space ) )
+			else if( InputManager.IsTriggerAction() )
 			{
 				if( IsForegroundGoal() )
 				{
