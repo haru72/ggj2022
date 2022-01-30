@@ -10,6 +10,7 @@ namespace GameMainSpace.PhaseSpace
 		Startup,
 		Tutorial,
 		Main,
+		GameClear,
 	}
 
 	public class PhaseController
@@ -19,6 +20,7 @@ namespace GameMainSpace.PhaseSpace
 			{ PhaseType.Startup , typeof(StartupPhase) },
 			{ PhaseType.Tutorial , typeof(TutorialPhase) },
 			{ PhaseType.Main , typeof(MainPhase) },
+			{ PhaseType.GameClear, typeof(GameClearPhase) },
 		};
 
 		GameMainData GameMainData { get; }

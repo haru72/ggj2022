@@ -8,6 +8,8 @@ namespace GameMainSpace.MasuGimicSpace
 		bool _isLock = true;
 		MyAnimation MyAnimation { get; }
 
+		System.Action _callback;
+
 		public MasuGimic_Goal( MasuGimicBehaviour masuGimicBehaviour ) : base( masuGimicBehaviour )
 		{
 			MyAnimation = new MyAnimation();
@@ -18,10 +20,15 @@ namespace GameMainSpace.MasuGimicSpace
 		{
 		}
 
+		public void SetCallback( System.Action callback )
+		{
+			_callback = callback;
+		}
+
 		public override void Action()
 		{
 			_isLock = false;
-			MyAnimation.Play( "Open" );
+			MyAnimation.Play( "Open" , 0 , _callback );
 		}
 
 		public override bool CanTouch()

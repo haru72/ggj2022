@@ -82,25 +82,25 @@ namespace GameMainSpace.PlayerSpace
 		public void LightupCandle()
 		{
 			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.LightFire );
-			MyAnimation.Play( "Light" );
+			MyAnimation.Play( "Light" , 1 );
 		}
 		public void Damage()
 		{
-			MyAnimation.Play( "Damage" );
+			MyAnimation.Play( "Damage" , 1 );
 		}
 		public void Pickup()
 		{
 			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.GetKey );
-			MyAnimation.Play( "PickUp" );
+			MyAnimation.Play( "PickUp" , 1 );
 		}
 		public void Dead()
 		{
-			MyAnimation.Play( "Dead" );
+			MyAnimation.Play( "Dead" , 1 );
 		}
 		public void Purify()
 		{
 			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.Purify );
-			MyAnimation.Play( "Purify" );
+			MyAnimation.Play( "Purify" , 1 );
 		}
 
 		public void Move(Vector3 nextMasu)

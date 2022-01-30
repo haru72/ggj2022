@@ -106,7 +106,12 @@ namespace GameMainSpace
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
 					Player.GetSetKeyNum = Player.GetSetKeyNum - 1;
-					masuGimic.Action();
+					var masuGimic_Goal = masuGimic as MasuGimicSpace.MasuGimic_Goal;
+					masuGimic_Goal.SetCallback( ()=> {
+						FadeManager.FadeOut(()=> { SceneController.GetInstance().ChangeScene( "GameClear" ); } );
+					} );
+					masuGimic_Goal.Action();
+					PhaseController.ChangePhase( PhaseSpace.PhaseType.GameClear );
 				}
 			}
 

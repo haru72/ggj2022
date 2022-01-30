@@ -17,6 +17,7 @@ namespace Assets.Scripts.FramWork.Scene
 			}
 			else
 			{
+				MyAudioController.GetInstance().PlayBGM( MyAudioController.BGMType.Title );
 				FadeManager.FadeIn( null );
 			}
 		}
