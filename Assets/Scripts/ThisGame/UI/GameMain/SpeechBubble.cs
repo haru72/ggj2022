@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class SpeechBubble : MonoBehaviour
 {
 	[SerializeField]
-	Text m_text;
+	TMPro.TextMeshProUGUI m_text;
 
 	Animation m_anim;
 
