@@ -131,6 +131,8 @@ namespace GameMainSpace.PlayerSpace
 			{
 				m_isMove = true;
 				MyAnimation.Play( "Walk");
+				MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.Walk );
+
 				//MyAnimation.SetBool( "IsWalk" , true );
 			}
 		}
