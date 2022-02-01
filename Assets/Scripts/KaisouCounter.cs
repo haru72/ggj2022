@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class KaisouCounter : MonoBehaviour
+public class KaisouCounter
 {
     const int m_maxCount = 7; // C‘ä‚Ì”
     int m_nowCount = 0;

@@ -13,6 +13,7 @@ namespace GameMainSpace.MasuGimicSpace
 			{ GimicType.Curse , typeof(MasuGimic_Curse) },
 			{ GimicType.Key , typeof(MasuGimic_Key) },
 			{ GimicType.Goal , typeof(MasuGimic_Goal) },
+			{ GimicType.DropCandle , typeof(MasuGimic_DropCandle) },
 		};
 
 		List<MasuGimic> _masuGimicList = new List<MasuGimic>();

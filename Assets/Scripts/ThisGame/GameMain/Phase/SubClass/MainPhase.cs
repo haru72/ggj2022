@@ -69,7 +69,7 @@ namespace GameMainSpace.PhaseSpace
 				{
 					//ゴール手前 誤ってろうそくを使わないようにする
 				}
-				else if( GameMainData.Player.GetSetCandleNum > 1 )
+				else if( GameMainData.Player.GetSetCandleNum > 0 )
 				{
 					bool isLookCandle = InputAction_Candle();
 					if( !isLookCandle )
@@ -113,6 +113,10 @@ namespace GameMainSpace.PhaseSpace
 				var candleNum = GameMainData.Player.GetSetCandleNum - 1;
 				GameMainData.GameMainUtility.ChangeCandleNum( candleNum );
 				GameMainData.UIGameMainManager.AppearCandleMinus();
+				GameMainData.OpenLightCandleStickBaloon();
+				
+				GameMainData.UIGameMainManager.CandleSpeechBubbleClose();
+
 			}
 
 			return true;

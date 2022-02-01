@@ -56,13 +56,14 @@ namespace GameMainSpace.PlayerSpace
 		public int GetSetCandleNum
 		{
 			get { return m_candleNum; }
-			set { if (0 < m_candleNum) m_candleNum = value; }
+			set { m_candleNum = value; }
 		}
 		public int GetSetKeyNum
 		{
 			get { return m_keyNum; }
 			set { m_keyNum = value; }
 		}
+
 
 		public Vector3 GetNowMasu
         {
@@ -93,6 +94,13 @@ namespace GameMainSpace.PlayerSpace
 			MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.GetKey );
 			MyAnimation.Play( "PickUp" , 1 );
 		}
+
+		public void PickupChandle()
+		{
+			//MyAudioController.GetInstance().PlaySE( MyAudioController.SoundType.GetKey );
+			MyAnimation.Play( "PickUp" , 1 );
+		}
+
 		public void Dead()
 		{
 			MyAnimation.Play( "Dead" , 1 );
@@ -161,5 +169,6 @@ namespace GameMainSpace.PlayerSpace
 				MyAnimation.Play( "Stay");
 			}
 		}
+
 	}
 }

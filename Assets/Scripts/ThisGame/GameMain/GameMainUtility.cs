@@ -46,6 +46,24 @@ namespace GameMainSpace
 			GameMainData.Player.GetSetCandleNum = candleNum;
 			GameMainData.UIGameMainManager.SetCandleNum( candleNum );
 
+			if( candleNum == 0 )
+			{
+
+				var screenPos = RectTransformUtility.WorldToScreenPoint( Camera.main , GameMainData.Player.GetNowMasu + new Vector3( 0.5f , 3 , 0 ) );
+
+				var pos = new Vector2(
+					( screenPos.x - Screen.width / 2 ) * 1f / GameMainData.Canvas.transform.localScale.x ,
+					( screenPos.y - Screen.height / 2 ) * 1f / GameMainData.Canvas.transform.localScale.y
+				);
+
+
+				GameMainData.UIGameMainManager.CandleSpeechBubbleOpenCanNotUse( pos );
+			}
+			else
+			{
+				GameMainData.UIGameMainManager.CandleSpeechBubbleClose();
+			}
+
 		}
 
 		public Vector2Int CalcForwardMasu( Vector2Int nowMasu , Vector3 forward )

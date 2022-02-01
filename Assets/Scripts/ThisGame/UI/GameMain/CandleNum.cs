@@ -21,7 +21,16 @@ public class CandleNum : MonoBehaviour
         
     }
 
-	public void SetNum(int num){
+	public void SetNum( int num )
+    {
 		m_text.text = num.ToString();
-	}
+        if( num > 0 )
+        {
+            m_text.color = Color.black;
+        }
+        else
+        {
+            m_text.color = Color.red;
+        }
+    }
 }

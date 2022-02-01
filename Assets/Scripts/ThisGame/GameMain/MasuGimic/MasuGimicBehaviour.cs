@@ -9,6 +9,7 @@ namespace GameMainSpace.MasuGimicSpace
 		Candlestick,
 		Key,
 		Goal,
+		DropCandle,
 	}
 	public class MasuGimicBehaviour : MonoBehaviour
 	{

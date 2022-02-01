@@ -11,6 +11,7 @@ namespace GameMainSpace.PhaseSpace
 		Tutorial,
 		Main,
 		GameClear,
+		GameOver,
 	}
 
 	public class PhaseController
@@ -21,6 +22,7 @@ namespace GameMainSpace.PhaseSpace
 			{ PhaseType.Tutorial , typeof(TutorialPhase) },
 			{ PhaseType.Main , typeof(MainPhase) },
 			{ PhaseType.GameClear, typeof(GameClearPhase) },
+			{ PhaseType.GameOver, typeof(GameOverPhase) },
 		};
 
 		GameMainData GameMainData { get; }

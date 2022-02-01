@@ -9,29 +9,7 @@ namespace MyParticle
 	{
 		public enum ParticleId
 		{
-			CharaActive,
-			Slash_1,
-			Slash_2,
-			Slash_3,
-			Slash_4,
-			Thunder_1,
-			Meteo_1,
-			Wind_1,
-			Drain,
-			Drain2,
-			Bomb,
-			SmallBomb,
-			HitEffect,
-			Shield,
-			Spear_1,
-			Arrow_1,
-			Seal,
-			WarpIn,
-			WarpOut,
-			PowerUp,
-			Gold,
-			CharaConfetti,
-			CharaConfetti2,
+			Purify,
 		}
 
 		GameObject _gameObject;

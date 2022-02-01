@@ -29,6 +29,8 @@ namespace GameMainSpace
 
 		public Canvas Canvas { get; }
 
+		public KaisouCounter KaisouCounter { get; }
+
 		public IDefine DefineInterface { get; }
 
 		public GameMainData(GameObject gameObject , IDefine defineInterface )
@@ -56,10 +58,11 @@ namespace GameMainSpace
 				}
 			);
 
+			KaisouCounter = new KaisouCounter();
+
 			Canvas = gameObject.transform.Find( "Canvas" ).GetComponent<Canvas>();
 
 			PhaseController = new PhaseSpace.PhaseController( this );
-
 		}
 
 
@@ -77,19 +80,20 @@ namespace GameMainSpace
 				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.Curse );
 				if( masuGimic != null && masuGimic.CanTouch() )
 				{
-					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
-					UIGameMainManager.AppearCandleMinus();
-
+					int candleNum = Player.GetSetCandleNum - 1;
 					masuGimic.Action();
 
-					if( Player.GetSetCandleNum <= 0 )
+					if( candleNum < 0 )
 					{
 						//GameOver
 						Player.Dead();
-						GameOver.SetActive( true );
+						PhaseController.ChangePhase( PhaseSpace.PhaseType.GameOver );
 					}
 					else
 					{
+						//死なないときはロウソクの数を更新
+						GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum - 1 );
+						UIGameMainManager.AppearCandleMinus();
 						Player.Damage();
 					}
 				}
@@ -122,6 +126,7 @@ namespace GameMainSpace
 			}
 
 			//キャンドル前
+			if( Player.GetSetCandleNum > 0 )
 			{
 				var playerMasu = PanelController.CalcMasuByPos( Player.GetNowMasu );
 				var forwardMasu = GameMainUtility.CalcForwardMasu( playerMasu , Player.GetForward );
@@ -136,17 +141,27 @@ namespace GameMainSpace
 						( screenPos.y - Screen.height / 2 ) * 1f / Canvas.transform.localScale.y
 					);
 
-					UIGameMainManager.CandleSpeechBubbleOpenCanUse( pos );
+					if( masuGimic.CanTouch() )
+					{
+						UIGameMainManager.CandleSpeechBubbleOpenCanUse( pos );
+					}
 				}
-				else
+				else 
 				{
 					UIGameMainManager.CandleSpeechBubbleClose();
 				}
 			}
 
+			{
+				var masuGimic = MasuGimicManager.GetMasuGimic( masu , MasuGimicSpace.GimicType.DropCandle );
+				if( masuGimic != null && masuGimic.CanTouch() )
+				{
+					masuGimic.Action();
+					GameMainUtility.ChangeCandleNum( Player.GetSetCandleNum + 1 );
+					Player.PickupChandle();
 
-
-
+				}
+			}
 
 
 			var candleList = MasuGimicManager.GetCandleList();
@@ -160,7 +175,23 @@ namespace GameMainSpace
 
 		float PlayerSpace.Player.IPlayer.MoveSpeed => DefineInterface.PlayerMoveSpeed;
 		float PlayerSpace.Player.IPlayer.TurnSpeed => DefineInterface.PlayerTurnSpeed;
-	}
 
+
+
+		public void OpenLightCandleStickBaloon()
+		{
+			var str = KaisouCounter.GetKaisouText();
+
+			var screenPos = RectTransformUtility.WorldToScreenPoint( Camera.main , Player.GetNowMasu + new Vector3( 3f , 3.5f , 0 ) );
+
+			var pos = new Vector2(
+				( screenPos.x - Screen.width / 2 ) * 1f / Canvas.transform.localScale.x ,
+				( screenPos.y - Screen.height / 2 ) * 1f / Canvas.transform.localScale.y
+			);
+
+			UIGameMainManager.SpeechBubbleOpen( pos , str );
+		}
+
+	}
 
 }

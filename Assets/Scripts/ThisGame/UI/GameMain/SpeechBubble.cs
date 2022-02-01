@@ -10,6 +10,10 @@ public class SpeechBubble : MonoBehaviour
 
 	Animation m_anim;
 
+	float m_timer = 0;
+	float m_timeEnd = 0;
+	System.Action m_timerCntAction;
+
 	enum eState{
 		None,
 		In,
@@ -26,6 +30,8 @@ public class SpeechBubble : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+		m_timerCntAction?.Invoke();
+
 		switch(m_state){
 		case eState.In:
 			if(m_anim.isPlaying == false){
@@ -41,6 +47,18 @@ public class SpeechBubble : MonoBehaviour
 		}
     }
 
+	void Update_ToClose()
+	{
+		m_timer += Time.deltaTime;
+
+		if( m_timer > m_timeEnd )
+		{
+			m_timerCntAction = null;
+			Close();
+		}
+	}
+
+
 	/// <summary>
 	/// 開始
 	/// </summary>
@@ -51,12 +69,20 @@ public class SpeechBubble : MonoBehaviour
 		m_anim.Play("SpeechBubbleIn");
 		transform.localPosition = pos;
 		m_text.text = text;
+
+		m_timerCntAction = Update_ToClose;
+		m_timer = 0;
+		m_timeEnd = text.Length * 0.5f;
 	}
 
 	/// <summary>
 	/// 終了
 	/// </summary>
 	public void Close(){
+		if( m_state == eState.None || m_state == eState.Out )
+		{
+			return;
+		}
 		m_state = eState.Out;
 		m_anim.Play("SpeechBubbleOut");
 	}

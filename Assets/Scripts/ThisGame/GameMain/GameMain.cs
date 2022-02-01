@@ -24,6 +24,18 @@ namespace GameMainSpace
 
 		IEnumerator StartupCoroutine()
 		{
+			{
+				var particleGenerateData = new MyParticle.GenerateData()
+				{
+					_groupId = MyParticle.ParticleController.ParticleId.Purify,
+					_particleGroupInitData = new MyParticle.GenerateData.ParticleGroupInitData()
+					{
+						_maxNum = 12,
+						_particleBaseObj = Resources.Load<GameObject>( "Prefabs/Particle_Purify" ),
+					}
+				};
+				MyParticle.ParticleController.GetInstance().GenerateParticleGroup( particleGenerateData );
+			}
 
 			yield return null;
 			GameMainData.GameMainUtility.ChangeCandleNum( GameMainData.DefineInterface.StartCandleNum );
@@ -39,6 +51,7 @@ namespace GameMainSpace
 
 			CollisionController.GetInstance().Update();
 			MyAnimationController.GetInstance().Update();
+			MyParticle.ParticleController.GetInstance().Update();
 		}
 
 	}
